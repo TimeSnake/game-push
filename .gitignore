@@ -1,0 +1,6 @@
+/out/
+/target/
+*.directory
+*.syncthing.*
+.idea/dataSources.xml
+.idea/dataSources
