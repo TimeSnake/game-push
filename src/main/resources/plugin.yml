@@ -1,0 +1,8 @@
+main: de.timesnake.game.push.main.GamePush
+version: 1.0
+name: game-push
+author: Mn
+depend: [ basic-lounge-bridge ]
+api-version: 1.13
+
+commands:
