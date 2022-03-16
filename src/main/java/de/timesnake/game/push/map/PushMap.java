@@ -89,27 +89,53 @@ public class PushMap extends Map {
 
         // villager path
 
+        PathPoint firstToBlue = null;
+        PathPoint firstToRed = null;
 
-        ExLocation finish = this.getBlueFinish().middleBlock();
-        PathPoint previous = this.spawnPoint;
+        for (List<Vector> vecs : List.of(STRAIGHT, DIAGONAL, TETRAGONAL)) {
+            for (Vector vec : vecs) {
+                ExLocation nearLoc = this.spawnPoint.getLocation().clone().add(vec).middleBlock();
+                Material type = nearLoc.clone().add(0, -1, 0).getBlock().getType();
 
-        ExLocation current = getNextLocation(this.getZombieSpawn().clone().middleBlock());
+                if (type.equals(Material.BLUE_WOOL)) {
+                    firstToBlue = new PathPoint(nearLoc);
+                } else if (type.equals(Material.RED_WOOL)) {
+                    firstToRed = new PathPoint(nearLoc);
+                }
+            }
+        }
+
+        if (firstToBlue == null || firstToRed == null) {
+            Server.printWarning(Plugin.PUSH,
+                    "No directions to blue/red found " + this.getName() + ": " + super.getInfo().get(0), "Map");
+            firstToBlue = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
+            this.spawnPoint.setNextToBlue(firstToBlue);
+            firstToRed = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
+            this.spawnPoint.setNextToRed(firstToRed);
+        } else {
+            this.spawnPoint.setNextToBlue(firstToBlue);
+            this.spawnPoint.setNextToRed(firstToRed);
+        }
+
+
+        PathPoint previous = firstToBlue;
+
+        ExLocation current = getNextLocation(firstToBlue.getLocation());
 
         while (current != null) {
             previous = previous.setNextToBlue(new PathPoint(current.middleBlock()));
-            System.out.println("blue " + current.getX() + " " + current.getY() + " " + current.getZ());
+            //System.out.println("blue " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
         }
 
-        finish = this.getRedFinish().middleBlock();
-        previous = this.spawnPoint;
+        previous = firstToRed;
 
-        current = getNextLocation(this.getZombieSpawn().clone().middleBlock());
+        current = getNextLocation(firstToRed.getLocation());
 
         while (current != null) {
             previous = previous.setNextToRed(new PathPoint(current.middleBlock()));
-            System.out.println("red " + current.getX() + " " + current.getY() + " " + current.getZ());
+            //System.out.println("red " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
         }
