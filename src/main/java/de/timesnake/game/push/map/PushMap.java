@@ -17,15 +17,21 @@ import java.util.Random;
 public class PushMap extends Map {
 
     private static final int VILLAGER_SPAWN_INDEX = 0;
-    private static final int BLUE_FINISH = 10;
-    private static final int RED_FINISH = 20;
+    private static final int BLUE_SPAWN = 10;
+    private static final int RED_SPAWN = 20;
 
     // x0 -> villager finish
-    // x[1-9] -> team spawns
+    // x[0-10] -> team spawns
 
-    private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0, -1), new Vector(0, 0, 1));
-    private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0, -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0), new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1, 1));
-    private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1));
+    private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0,
+            -1), new Vector(0, 0, 1));
+    private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0
+            , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0),
+            new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1,
+                    1));
+    private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1),
+            new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1
+                    , -1), new Vector(1, 1, 1));
 
     private final Material villagerPathMaterial;
     private final int laps;
@@ -67,16 +73,17 @@ public class PushMap extends Map {
         Material material = Material.getMaterial(super.getInfo().get(1));
 
         if (material == null) {
-            Server.printWarning(Plugin.PUSH, "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0), "Map");
+            Server.printWarning(Plugin.PUSH,
+                    "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0), "Map");
             material = Material.BEDROCK;
         }
         this.villagerPathMaterial = material;
 
         this.spawnPoint = new PathPoint(this.getZombieSpawn().clone().middleBlock());
 
-        for (int i = 1; i < 9; i++) {
-            int blueIndex = BLUE_FINISH + i;
-            int redIndex = RED_FINISH + i;
+        for (int i = 0; i < 10; i++) {
+            int blueIndex = BLUE_SPAWN + i;
+            int redIndex = RED_SPAWN + i;
 
             if (super.containsLocation(blueIndex)) {
                 this.blueSpawnIndizes.add(blueIndex);
@@ -162,11 +169,11 @@ public class PushMap extends Map {
     }
 
     public ExLocation getBlueFinish() {
-        return super.getLocation(BLUE_FINISH);
+        return super.getLocation(BLUE_SPAWN);
     }
 
     public ExLocation getRedFinish() {
-        return super.getLocation(RED_FINISH);
+        return super.getLocation(RED_SPAWN);
     }
 
     public ExLocation getRandomBlueSpawn() {
