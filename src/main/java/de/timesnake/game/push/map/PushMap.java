@@ -20,23 +20,26 @@ public class PushMap extends Map {
     private static final int BLUE_SPAWN = 10;
     private static final int RED_SPAWN = 20;
 
+    private static final int ITEM_SPAWNERS = 100;
+
     // x0 -> villager finish
     // x[0-10] -> team spawns
 
     private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0,
             -1), new Vector(0, 0, 1));
     private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0
-            , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0),
+                    , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0),
             new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1,
                     1));
     private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1),
             new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1
                     , -1), new Vector(1, 1, 1));
 
-    private final Material villagerPathMaterial;
+    private final List<Material> villagerPathMaterials = new LinkedList<>();
     private final int laps;
 
     private final PathPoint spawnPoint;
+    private final List<ItemSpawner> itemSpawners = new LinkedList<>();
 
     private final LinkedList<Integer> blueSpawnIndizes = new LinkedList<>();
     private final LinkedList<Integer> redSpawnIndizes = new LinkedList<>();
@@ -50,7 +53,7 @@ public class PushMap extends Map {
             world.allowBlockPlace(false);
             world.allowFireSpread(false);
             world.allowBlockBreak(false);
-            world.allowEntityExplode(false);
+            world.allowEntityExplode(true);
             world.allowBlockBurnUp(false);
             world.allowLightUpInteraction(true);
             world.allowFluidCollect(false);
@@ -70,14 +73,24 @@ public class PushMap extends Map {
 
         this.laps = Integer.parseInt(super.getInfo().get(0));
 
-        Material material = Material.getMaterial(super.getInfo().get(1));
+        String[] materialNames = super.getInfo().get(1).split(",");
 
-        if (material == null) {
+        for (String materialName : materialNames) {
+            Material material = Material.getMaterial(materialName.toUpperCase());
+
+            if (material == null) {
+                Server.printWarning(Plugin.PUSH,
+                        "Unknown material for map " + this.getName() + ": " + materialName, "Map");
+            } else {
+                this.villagerPathMaterials.add(material);
+            }
+        }
+
+        if (this.villagerPathMaterials.isEmpty()) {
             Server.printWarning(Plugin.PUSH,
                     "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0), "Map");
-            material = Material.BEDROCK;
+            this.villagerPathMaterials.add(Material.BEDROCK);
         }
-        this.villagerPathMaterial = material;
 
         this.spawnPoint = new PathPoint(this.getZombieSpawn().clone().middleBlock());
 
@@ -131,7 +144,7 @@ public class PushMap extends Map {
 
         while (current != null) {
             previous = previous.setNextToBlue(new PathPoint(current.middleBlock()));
-            //System.out.println("blue " + current.getX() + " " + current.getY() + " " + current.getZ());
+            System.out.println("blue " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
         }
@@ -142,9 +155,13 @@ public class PushMap extends Map {
 
         while (current != null) {
             previous = previous.setNextToRed(new PathPoint(current.middleBlock()));
-            //System.out.println("red " + current.getX() + " " + current.getY() + " " + current.getZ());
+            System.out.println("red " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
+        }
+
+        for (ExLocation location : super.getLocations(ITEM_SPAWNERS)) {
+            this.itemSpawners.add(new ItemSpawner(location));
         }
     }
 
@@ -152,7 +169,8 @@ public class PushMap extends Map {
         for (List<Vector> vecs : List.of(STRAIGHT, DIAGONAL, TETRAGONAL)) {
             for (Vector vec : vecs) {
                 ExLocation nearLoc = current.clone().add(vec).middleBlock();
-                if (!this.spawnPoint.contains(nearLoc) && nearLoc.clone().add(0, -1, 0).getBlock().getType().equals(this.villagerPathMaterial)) {
+                if (!this.spawnPoint.contains(nearLoc) && this.villagerPathMaterials.contains(nearLoc.clone().add(0,
+                        -1, 0).getBlock().getType())) {
                     return nearLoc;
                 }
             }
@@ -186,5 +204,9 @@ public class PushMap extends Map {
 
     public PathPoint getSpawnPoint() {
         return spawnPoint;
+    }
+
+    public List<ItemSpawner> getItemSpawners() {
+        return this.itemSpawners;
     }
 }
