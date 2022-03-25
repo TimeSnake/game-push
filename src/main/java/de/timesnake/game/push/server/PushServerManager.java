@@ -13,6 +13,7 @@ import de.timesnake.database.util.game.DbGame;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.map.EscortManager;
+import de.timesnake.game.push.map.ItemSpawner;
 import de.timesnake.game.push.map.PushMap;
 import de.timesnake.game.push.user.PushKit;
 import de.timesnake.game.push.user.PushUser;
@@ -102,7 +103,6 @@ public class PushServerManager extends LoungeBridgeServerManager {
             entity.remove();
         }
 
-        this.escortManager.spawn();
         this.sideboard.setScore(0, this.getMap().getDisplayName());
     }
 
@@ -117,13 +117,13 @@ public class PushServerManager extends LoungeBridgeServerManager {
         int delta = this.getGame().getBlueTeam().getUsers().size() - this.getGame().getRedTeam().getUsers().size();
         if (delta < 0) {
             for (User user : this.getGame().getBlueTeam().getUsers()) {
-                user.setMaxHealth(30);
-                user.setHealth(30);
+                user.setMaxHealth(((double) this.getGame().getRedTeam().getUsers().size()) / this.getGame().getBlueTeam().getUsers().size() * 20);
+                user.setHealth(((double) this.getGame().getRedTeam().getUsers().size()) / this.getGame().getBlueTeam().getUsers().size() * 20);
             }
         } else if (delta > 0) {
             for (User user : this.getGame().getRedTeam().getUsers()) {
-                user.setMaxHealth(30);
-                user.setHealth(30);
+                user.setMaxHealth(((double) this.getGame().getBlueTeam().getUsers().size()) / this.getGame().getRedTeam().getUsers().size() * 20);
+                user.setHealth(((double) this.getGame().getBlueTeam().getUsers().size()) / this.getGame().getRedTeam().getUsers().size() * 20);
             }
         }
 
@@ -143,12 +143,18 @@ public class PushServerManager extends LoungeBridgeServerManager {
         }
 
         this.escortManager.start();
+        for (ItemSpawner spawner : this.getMap().getItemSpawners()) {
+            spawner.start();
+        }
     }
 
     public void onFinishReached(boolean blue) {
         this.isRunning = false;
 
         this.escortManager.stop();
+        for (ItemSpawner spawner : this.getMap().getItemSpawners()) {
+            spawner.stop();
+        }
 
         if (blue) {
             this.blueWins++;
@@ -216,7 +222,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
         if (this.blueWins > this.redWins) {
             Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + " wins", "", Duration.ofSeconds(5));
         } else if (this.redWins > this.blueWins) {
-            Server.broadcastTitle(redTeam.getDisplayName() + redTeam.getDisplayName() + " wins", "", Duration.ofSeconds(5));
+            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + " wins", "",
+                    Duration.ofSeconds(5));
         } else {
             Server.broadcastTitle("Draw", "", Duration.ofSeconds(5));
         }
