@@ -1,10 +1,9 @@
 package de.timesnake.game.push.user;
 
 import de.timesnake.basic.bukkit.util.Server;
-import de.timesnake.basic.bukkit.util.user.event.UserBlockPlaceEvent;
-import de.timesnake.basic.bukkit.util.user.event.UserDeathEvent;
-import de.timesnake.basic.bukkit.util.user.event.UserDropItemEvent;
-import de.timesnake.basic.bukkit.util.user.event.UserRespawnEvent;
+import de.timesnake.basic.bukkit.util.user.User;
+import de.timesnake.basic.bukkit.util.user.event.*;
+import de.timesnake.basic.entities.entity.bukkit.ExZombie;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.server.PushServer;
 import org.bukkit.Location;
@@ -13,6 +12,9 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class UserManager implements Listener {
 
@@ -71,6 +73,32 @@ public class UserManager implements Listener {
             e.setCancelled(true);
             Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1, GamePush.getPlugin());
         }
+    }
+
+    @EventHandler
+    public void onPotionSplash(PotionSplashEvent e) {
+        ExZombie zombie = PushServer.getEscordManager().getZombie();
+
+        if (zombie != null) {
+            for (PotionEffect potionEffect : e.getPotion().getEffects()) {
+                zombie.removePotionEffect(potionEffect.getType());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onUserDamage(UserDamageEvent e) {
+        User user = e.getUser();
+
+        if (((PushUser) user).getKit() == null || !((PushUser) user).getKit().equals(PushKit.BARBAR)) {
+            return;
+        }
+
+        if (user.getHealth() > 6) {
+            return;
+        }
+
+        user.addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 1);
     }
 
 }
