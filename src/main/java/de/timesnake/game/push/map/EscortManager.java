@@ -12,6 +12,7 @@ import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.server.PushServer;
 import de.timesnake.game.push.user.PushUser;
 import de.timesnake.library.basic.util.Status;
+import de.timesnake.library.reflection.wrapper.ExBlockPosition;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +24,7 @@ public class EscortManager {
 
     private static final double RADIUS = 5;
     private static final double DEFAULT_SPEED = 0.8;
-    private static final double SPEED_INCERASE = 1;
+    private static final double SPEED_INCERASE = 30;
     private static final int STOP_PLAYER_NUMBER = 2;
 
     private ExZombie zombie;
@@ -39,6 +40,10 @@ public class EscortManager {
 
     public EscortManager() {
 
+    }
+
+    public ExZombie getZombie() {
+        return zombie;
     }
 
     public void start() {
@@ -123,12 +128,12 @@ public class EscortManager {
             if (countBlue > countRed) {
                 double speed = this.baseSpeed - (this.baseSpeed / STOP_PLAYER_NUMBER * countRed);
                 if (speed > 0) {
-                    this.moveTo(true, speed);
+                    this.moveTo(false, speed);
                 }
             } else if (countRed > countBlue) {
                 double speed = this.baseSpeed - (this.baseSpeed / STOP_PLAYER_NUMBER * countBlue);
                 if (speed > 0) {
-                    this.moveTo(false, speed);
+                    this.moveTo(true, speed);
                 }
             }
 
@@ -142,7 +147,11 @@ public class EscortManager {
     }
 
     private void moveTo(boolean blue, double speed) {
-        double distance = this.zombie.getLocation().distance(this.currentPathPoint.getLocation().toBlockLocation());
+        double distance = this.zombie.getLocation().distance(this.currentPathPoint.getLocation().middleBlock());
+
+        System.out.println(distance);
+
+        System.out.println(this.zombie.getNavigation().calcExPathTo(new ExBlockPosition(this.currentPathPoint.getLocation().getX(), this.currentPathPoint.getLocation().getY(), this.currentPathPoint.getLocation().getZ())) != null);
 
         if (distance > 2 && this.lastDirectionBlue == blue) {
             return;
@@ -152,7 +161,7 @@ public class EscortManager {
 
         PathPoint next = this.currentPathPoint;
 
-        while (next.getLocation().distance(this.currentPathPoint.getLocation()) <= 2) {
+        while (next != null && next.getLocation().distance(this.currentPathPoint.getLocation().middleBlock()) <= 2.1) {
             if (blue) {
                 next = next.getNextToBlue();
             } else {
@@ -160,9 +169,8 @@ public class EscortManager {
             }
         }
 
-
         if (next == null) {
-            if (distance < 2) {
+            if (distance < 1.2) {
                 PushServer.onFinishReached(!blue);
                 return;
             }

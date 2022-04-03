@@ -137,14 +137,12 @@ public class PushMap extends Map {
             this.spawnPoint.setNextToRed(firstToRed);
         }
 
-
         PathPoint previous = firstToBlue;
 
         ExLocation current = getNextLocation(firstToBlue.getLocation());
 
         while (current != null) {
             previous = previous.setNextToBlue(new PathPoint(current.middleBlock()));
-            System.out.println("blue " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
         }
@@ -155,7 +153,6 @@ public class PushMap extends Map {
 
         while (current != null) {
             previous = previous.setNextToRed(new PathPoint(current.middleBlock()));
-            System.out.println("red " + current.getX() + " " + current.getY() + " " + current.getZ());
 
             current = getNextLocation(current);
         }
