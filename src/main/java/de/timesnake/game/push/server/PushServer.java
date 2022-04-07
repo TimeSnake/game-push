@@ -4,6 +4,7 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServer;
 import de.timesnake.game.push.map.EscortManager;
 import de.timesnake.game.push.map.PushMap;
+import org.bukkit.boss.BossBar;
 
 public class PushServer extends LoungeBridgeServer {
 
@@ -27,5 +28,9 @@ public class PushServer extends LoungeBridgeServer {
 
     public static EscortManager getEscordManager() {
         return server.getEscortManager();
+    }
+
+    public static BossBar getBossBar() {
+        return server.getBossBar();
     }
 }

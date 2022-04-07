@@ -44,6 +44,7 @@ public class PushUser extends GameUser {
         this.lockLocation(true);
 
         this.setSideboard(PushServer.getGameSideboard());
+        this.setBossBar(PushServer.getBossBar());
     }
 
     private void setItems() {

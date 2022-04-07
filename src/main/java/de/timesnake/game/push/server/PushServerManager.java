@@ -21,9 +21,13 @@ import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
 import de.timesnake.library.basic.util.chat.ChatColor;
 import de.timesnake.library.extension.util.chat.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -40,6 +44,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
     private int redWins = 0;
 
     private SpecialItemManager specialItemManager;
+
+    private BossBar bossBar;
 
     public static PushServerManager getInstance() {
         return (PushServerManager) LoungeBridgeServerManager.getInstance();
@@ -62,6 +68,7 @@ public class PushServerManager extends LoungeBridgeServerManager {
 
         this.specialItemManager = new SpecialItemManager();
 
+        this.bossBar = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
     }
 
 
@@ -123,15 +130,20 @@ public class PushServerManager extends LoungeBridgeServerManager {
     public void prepareGame() {
         this.lap = 0;
         this.updateSideboardLap();
+
+        this.updateBossBar(0, 0);
     }
 
     @Override
     public void startGame() {
         int delta = this.getGame().getBlueTeam().getUsers().size() - this.getGame().getRedTeam().getUsers().size();
         if (delta < 0) {
+            double health = ((double) this.getGame().getRedTeam().getUsers().size()) /
+                    this.getGame().getBlueTeam().getUsers().size() * 20;
+
             for (User user : this.getGame().getBlueTeam().getUsers()) {
-                user.setMaxHealth(((double) this.getGame().getRedTeam().getUsers().size()) / this.getGame().getBlueTeam().getUsers().size() * 20);
-                user.setHealth(((double) this.getGame().getRedTeam().getUsers().size()) / this.getGame().getBlueTeam().getUsers().size() * 20);
+                user.setMaxHealth(health);
+                user.setHealth(health);
             }
 
             for (User user : this.getGame().getRedTeam().getUsers()) {
@@ -139,20 +151,23 @@ public class PushServerManager extends LoungeBridgeServerManager {
                 user.setHealth(20);
             }
         } else if (delta > 0) {
+            double health = ((double) this.getGame().getBlueTeam().getUsers().size()) /
+                    this.getGame().getRedTeam().getUsers().size() * 20;
+
             for (User user : this.getGame().getRedTeam().getUsers()) {
-                user.setMaxHealth(((double) this.getGame().getBlueTeam().getUsers().size()) / this.getGame().getRedTeam().getUsers().size() * 20);
-                user.setHealth(((double) this.getGame().getBlueTeam().getUsers().size()) / this.getGame().getRedTeam().getUsers().size() * 20);
+                user.setMaxHealth(health);
+                user.setHealth(health);
             }
 
             for (User user : this.getGame().getBlueTeam().getUsers()) {
                 user.setMaxHealth(20);
                 user.setHealth(20);
             }
-        }
-
-        for (User user : Server.getInGameUsers()) {
-            user.setMaxHealth(20);
-            user.setHealth(20);
+        } else {
+            for (User user : Server.getInGameUsers()) {
+                user.setMaxHealth(20);
+                user.setHealth(20);
+            }
         }
 
         this.nextLap();
@@ -190,6 +205,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
             this.redWins++;
         }
 
+        this.updateBossBar(this.blueWins, this.redWins);
+
         if (this.lap >= this.getMap().getLaps()) {
             this.stopGame();
             return;
@@ -199,9 +216,10 @@ public class PushServerManager extends LoungeBridgeServerManager {
         Team redTeam = this.getGame().getRedTeam();
 
         if (blue) {
-            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + " scored", "", Duration.ofSeconds(3));
+            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f scored", "",
+                    Duration.ofSeconds(3));
         } else {
-            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + " scored", "", Duration.ofSeconds(3));
+            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f scored", "", Duration.ofSeconds(3));
         }
 
         this.broadcastGameMessage(ChatColor.GOLD + "§lScores: ");
@@ -249,9 +267,9 @@ public class PushServerManager extends LoungeBridgeServerManager {
         this.broadcastGameMessage(Chat.getLongLineSeparator());
 
         if (this.blueWins > this.redWins) {
-            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + " wins", "", Duration.ofSeconds(5));
+            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f wins", "", Duration.ofSeconds(5));
         } else if (this.redWins > this.blueWins) {
-            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + " wins", "",
+            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f wins", "",
                     Duration.ofSeconds(5));
         } else {
             Server.broadcastTitle("Draw", "", Duration.ofSeconds(5));
@@ -265,8 +283,28 @@ public class PushServerManager extends LoungeBridgeServerManager {
         this.sideboard.setScore(3, this.lap + " §7/ §f" + this.getMap().getLaps());
     }
 
+    public void updateBossBar(int blueWins, int redWins) {
+        Team blue = this.getGame().getBlueTeam();
+        Team red = this.getGame().getRedTeam();
+
+        this.bossBar.setTitle(blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
+                "§6" + redWins + "§f - " + red.getChatColor() + red.getDisplayName());
+
+        if (blueWins > redWins) {
+            this.bossBar.setColor(BarColor.BLUE);
+        } else if (redWins > blueWins) {
+            this.bossBar.setColor(BarColor.RED);
+        } else {
+            this.bossBar.setColor(BarColor.WHITE);
+        }
+    }
+
     public Sideboard getGameSideboard() {
         return this.sideboard;
+    }
+
+    public BossBar getBossBar() {
+        return bossBar;
     }
 
     @Override
