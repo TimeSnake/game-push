@@ -13,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class UserManager implements Listener {
@@ -79,10 +78,10 @@ public class UserManager implements Listener {
     public void onPotionSplash(PotionSplashEvent e) {
         ExZombie zombie = PushServer.getEscordManager().getZombie();
 
+        System.out.println("splash");
+
         if (zombie != null) {
-            for (PotionEffect potionEffect : e.getPotion().getEffects()) {
-                zombie.removePotionEffect(potionEffect.getType());
-            }
+            zombie.removePotionEffect(PotionEffectType.SPEED);
         }
     }
 

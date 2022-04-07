@@ -24,7 +24,7 @@ public class EscortManager {
 
     private static final double RADIUS = 5;
     private static final double DEFAULT_SPEED = 0.8;
-    private static final double SPEED_INCERASE = 30;
+    private static final double SPEED_INCREASE = 30;
     private static final int STOP_PLAYER_NUMBER = 2;
 
     private ExZombie zombie;
@@ -137,7 +137,7 @@ public class EscortManager {
                 }
             }
 
-            if (time % SPEED_INCERASE * 2 == 0) {
+            if (time % SPEED_INCREASE * 2 == 0) {
                 this.baseSpeed += 0.05;
             }
 
