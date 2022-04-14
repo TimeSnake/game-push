@@ -78,10 +78,9 @@ public class UserManager implements Listener {
     public void onPotionSplash(PotionSplashEvent e) {
         ExZombie zombie = PushServer.getEscordManager().getZombie();
 
-        System.out.println("splash");
-
         if (zombie != null) {
-            zombie.removePotionEffect(PotionEffectType.SPEED);
+            Server.runTaskLaterSynchrony(() -> zombie.removePotionEffect(PotionEffectType.SPEED), 1,
+                    GamePush.getPlugin());
         }
     }
 
