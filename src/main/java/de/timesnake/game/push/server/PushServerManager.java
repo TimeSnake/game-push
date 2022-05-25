@@ -219,7 +219,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
             Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f scored", "",
                     Duration.ofSeconds(3));
         } else {
-            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f scored", "", Duration.ofSeconds(3));
+            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f scored", "",
+                    Duration.ofSeconds(3));
         }
 
         this.broadcastGameMessage(ChatColor.GOLD + "§lScores: ");
@@ -267,7 +268,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
         this.broadcastGameMessage(Chat.getLongLineSeparator());
 
         if (this.blueWins > this.redWins) {
-            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f wins", "", Duration.ofSeconds(5));
+            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f wins", "",
+                    Duration.ofSeconds(5));
         } else if (this.redWins > this.blueWins) {
             Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f wins", "",
                     Duration.ofSeconds(5));
