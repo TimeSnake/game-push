@@ -14,12 +14,13 @@ public class PushUser extends GameUser {
 
     private static final List<ExItemStack> DEFAULT =
             List.of(new ExItemStack(0, Material.STONE_SWORD).setUnbreakable(true),
-            new ExItemStack(1, Material.BOW).setUnbreakable(true), new ExItemStack(7, Material.ARROW).asQuantity(8),
-            new ExItemStack(8, Material.BEEF).asQuantity(8),
+                    new ExItemStack(1, Material.BOW).setUnbreakable(true),
+                    new ExItemStack(7, Material.ARROW).asQuantity(8),
+                    new ExItemStack(8, Material.BEEF).asQuantity(8),
                     new ExItemStack(Material.CHAINMAIL_HELMET).setUnbreakable(true).setSlot(EquipmentSlot.HEAD),
-            new ExItemStack(Material.GOLDEN_CHESTPLATE).setUnbreakable(true).setSlot(EquipmentSlot.CHEST),
-            new ExItemStack(Material.CHAINMAIL_LEGGINGS).setUnbreakable(true).setSlot(EquipmentSlot.LEGS),
-            new ExItemStack(Material.GOLDEN_BOOTS).setUnbreakable(true).setSlot(EquipmentSlot.FEET));
+                    new ExItemStack(Material.GOLDEN_CHESTPLATE).setUnbreakable(true).setSlot(EquipmentSlot.CHEST),
+                    new ExItemStack(Material.CHAINMAIL_LEGGINGS).setUnbreakable(true).setSlot(EquipmentSlot.LEGS),
+                    new ExItemStack(Material.GOLDEN_BOOTS).setUnbreakable(true).setSlot(EquipmentSlot.FEET));
 
 
     public PushUser(Player player) {
