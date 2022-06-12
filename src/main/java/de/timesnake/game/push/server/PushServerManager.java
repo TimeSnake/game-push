@@ -117,7 +117,7 @@ public class PushServerManager extends LoungeBridgeServerManager {
 
 
     @Override
-    public void loadMap() {
+    public void onMapLoad() {
         super.loadMap();
         for (LivingEntity entity : this.getMap().getWorld().getLivingEntities()) {
             entity.remove();
@@ -135,7 +135,7 @@ public class PushServerManager extends LoungeBridgeServerManager {
     }
 
     @Override
-    public void startGame() {
+    public void onGameStart() {
         int delta = this.getGame().getBlueTeam().getUsers().size() - this.getGame().getRedTeam().getUsers().size();
         if (delta < 0) {
             double health = ((double) this.getGame().getRedTeam().getUsers().size()) /
