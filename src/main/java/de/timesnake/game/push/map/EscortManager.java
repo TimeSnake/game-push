@@ -10,8 +10,8 @@ import de.timesnake.game.push.user.PushUser;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
-import de.timesnake.library.entities.pathfinder.ExPathfinderGoalUpdatedLocation;
-import de.timesnake.library.entities.pathfinder.PathfinderGoalUpdatedLocation;
+import de.timesnake.library.entities.pathfinder.custom.CustomPathfinderGoalUpdatedLocation;
+import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalUpdatedLocation;
 import de.timesnake.library.reflection.wrapper.ExBlockPosition;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
@@ -33,7 +33,7 @@ public class EscortManager {
 
     private BukkitTask moveTask;
 
-    private PathfinderGoalUpdatedLocation pathfinder;
+    private CustomPathfinderGoalUpdatedLocation pathfinder;
 
     private int time;
     private double baseSpeed;
@@ -84,7 +84,7 @@ public class EscortManager {
 
         this.zombie.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true));
 
-        this.pathfinder = new PathfinderGoalUpdatedLocation(null, this.baseSpeed, 32, 0.2) {
+        this.pathfinder = new CustomPathfinderGoalUpdatedLocation(null, this.baseSpeed, 32, 0.2) {
             @Override
             public Location getNextLocation(Location entityLoc) {
                 return EscortManager.this.currentPathPoint.getLocation();
@@ -92,7 +92,7 @@ public class EscortManager {
         };
 
         this.zombie.addPathfinderGoal(1,
-                new ExPathfinderGoalUpdatedLocation(this.pathfinder));
+                new ExCustomPathfinderGoalUpdatedLocation(this.pathfinder));
 
         this.zombie.setCollidable(false);
 
