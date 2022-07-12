@@ -13,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.potion.PotionEffectType;
 
 public class UserManager implements Listener {
@@ -97,6 +99,13 @@ public class UserManager implements Listener {
         }
 
         user.addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 1);
+    }
+
+    @EventHandler
+    public void onBlockInventoryOpen(InventoryOpenEvent e) {
+        if (e.getView().getTopInventory().getHolder() instanceof BlockInventoryHolder) {
+            e.setCancelled(true);
+        }
     }
 
 }

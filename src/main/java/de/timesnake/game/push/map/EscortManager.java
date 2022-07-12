@@ -12,7 +12,6 @@ import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
 import de.timesnake.library.entities.pathfinder.custom.CustomPathfinderGoalUpdatedLocation;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalUpdatedLocation;
-import de.timesnake.library.reflection.wrapper.ExBlockPosition;
 import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +23,7 @@ public class EscortManager {
 
     private static final double RADIUS = 5;
     private static final double DEFAULT_SPEED = 0.8;
+    private static final double MAX_SPEED = 1.8;
     private static final double SPEED_INCREASE = 30;
     private static final int STOP_PLAYER_NUMBER = 2;
 
@@ -81,6 +81,10 @@ public class EscortManager {
 
         this.zombie.setInvulnerable(true);
         this.zombie.setPersistent(true);
+        this.zombie.setRemoveWhenFarAway(false);
+
+        this.zombie.setCustomName("Zombie");
+        this.zombie.setCustomNameVisible(false);
 
         this.zombie.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true));
 
@@ -137,7 +141,7 @@ public class EscortManager {
                 }
             }
 
-            if (time % SPEED_INCREASE * 2 == 0) {
+            if (time % SPEED_INCREASE * 2 == 0 && this.baseSpeed < MAX_SPEED) {
                 this.baseSpeed += 0.05;
             }
 
@@ -148,10 +152,6 @@ public class EscortManager {
 
     private void moveTo(boolean blue, double speed) {
         double distance = this.zombie.getLocation().distance(this.currentPathPoint.getLocation().middleBlock());
-
-        System.out.println(distance);
-
-        System.out.println(this.zombie.getNavigation().calcExPathTo(new ExBlockPosition(this.currentPathPoint.getLocation().getX(), this.currentPathPoint.getLocation().getY(), this.currentPathPoint.getLocation().getZ())) != null);
 
         if (distance > 2 && this.lastDirectionBlue == blue) {
             return;
