@@ -19,9 +19,9 @@ public class PushKit extends Kit {
 
     public static final PushKit BARBAR = new PushKit(1, "Barbar", Material.IRON_AXE,
             List.of("§7Stone Sword", "§7Iron, Chainmail Armor", "", "§7Instant Heal, Strength"),
-            List.of(new ExItemStack(Material.CHAINMAIL_HELMET).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false),
+            List.of(new ExItemStack(Material.IRON_HELMET).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.IRON_CHESTPLATE).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false),
-                    new ExItemStack(Material.CHAINMAIL_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false),
+                    new ExItemStack(Material.IRON_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.DIAMOND_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false),
                     new ExItemStack(0, Material.STONE_SWORD).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.POTION, PotionType.INSTANT_HEAL, false, true).asQuantity(3).setSlot(1).setDropable(false),
@@ -35,7 +35,7 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.LEATHER_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).addExEnchantment(Enchantment.PROTECTION_FALL, 3).setDropable(false),
                     new ExItemStack(0, Material.WOODEN_SWORD).setUnbreakable(true).addExEnchantment(Enchantment.KNOCKBACK, 2).setDropable(false),
                     new ExItemStack(1, Material.BOW).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.ARROW_DAMAGE, 1),
-                    new ExItemStack(true, "§6Poison", PotionEffectType.POISON, 15 * 20, 2, 1).setSlot(2),
+                    new ExItemStack(true, "§6Poison", PotionEffectType.POISON, 10 * 20, 2, 1).setSlot(2),
                     new ExItemStack(6, Material.ARROW).asQuantity(64),
                     new ExItemStack(7, Material.SPECTRAL_ARROW).asQuantity(8),
                     new ExItemStack(8, Material.GOLDEN_CARROT).asQuantity(8)));
@@ -70,6 +70,7 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.DIAMOND_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false),
                     new ExItemStack(0, Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.SWEEPING_EDGE, 3).setUnbreakable(true).setDropable(false),
                     SpecialItemManager.TURTLE_MASTER.getItem().cloneWithId().setSlot(1).enchant(),
+                    new ExItemStack(false, "§6Regeneration (10s)", PotionEffectType.REGENERATION, 10 * 20, 2, 1).setSlot(7).setDropable(false),
                     FOOD.cloneWithId().asQuantity(16).setSlot(8)));
 
 

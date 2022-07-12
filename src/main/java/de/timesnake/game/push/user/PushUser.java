@@ -65,6 +65,7 @@ public class PushUser extends GameUser {
     }
 
     public void respawn() {
+        this.clearInventory();
         this.removePotionEffects();
         this.heal();
         this.setFireTicks(0);
