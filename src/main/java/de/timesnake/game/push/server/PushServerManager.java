@@ -3,13 +3,13 @@ package de.timesnake.game.push.server;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
-import de.timesnake.basic.game.util.Game;
 import de.timesnake.basic.game.util.Team;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
 import de.timesnake.basic.loungebridge.util.user.KitNotDefinedException;
 import de.timesnake.database.util.game.DbGame;
+import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.map.EscortManager;
@@ -33,7 +33,11 @@ import org.bukkit.entity.Player;
 
 import java.time.Duration;
 
-public class PushServerManager extends LoungeBridgeServerManager {
+public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
+
+    public static PushServerManager getInstance() {
+        return (PushServerManager) LoungeBridgeServerManager.getInstance();
+    }
 
     private boolean isRunning;
     private int lap = 0;
@@ -42,14 +46,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
     private Sideboard sideboard;
     private int blueWins = 0;
     private int redWins = 0;
-
     private SpecialItemManager specialItemManager;
-
     private BossBar bossBar;
-
-    public static PushServerManager getInstance() {
-        return (PushServerManager) LoungeBridgeServerManager.getInstance();
-    }
 
     public void onPushServerEnable() {
         super.onLoungeBridgeEnable();
@@ -73,8 +71,8 @@ public class PushServerManager extends LoungeBridgeServerManager {
 
 
     @Override
-    protected Game loadGame(DbGame dbGame, boolean loadWorlds) {
-        return new PushGame(dbGame);
+    protected PushGame loadGame(DbGame dbGame, boolean loadWorlds) {
+        return new PushGame((DbTmpGame) dbGame);
     }
 
     @Override
