@@ -23,7 +23,7 @@ public class EscortManager {
 
     private static final double RADIUS = 5;
     private static final double DEFAULT_SPEED = 0.8;
-    private static final double MAX_SPEED = 1.8;
+    private static final double MAX_SPEED = 1.6;
     private static final double SPEED_INCREASE = 30;
     private static final int STOP_PLAYER_NUMBER = 2;
 

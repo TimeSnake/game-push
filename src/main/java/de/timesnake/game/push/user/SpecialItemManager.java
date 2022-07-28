@@ -51,7 +51,7 @@ public class SpecialItemManager implements UserInventoryInteractListener {
                         new ExItemStack(Material.DIAMOND_LEGGINGS).setUnbreakable(true).setMoveable(false).setDropable(false));
                 user.setItem(EquipmentSlot.FEET,
                         new ExItemStack(Material.DIAMOND_BOOTS).setUnbreakable(true).setMoveable(false).setDropable(false));
-            }, 15, GamePush.getPlugin());
+            }, 15 * 20, GamePush.getPlugin());
         }
     };
 

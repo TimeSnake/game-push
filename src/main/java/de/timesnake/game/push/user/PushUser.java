@@ -55,9 +55,9 @@ public class PushUser extends GameUser {
             int i = 0;
             for (ExItemStack item : DEFAULT) {
                 if (item.getSlot() != null) {
-                    this.getInventory().setItem(item.getSlot(), item);
+                    this.getInventory().setItem(item.getSlot(), item.cloneWithId());
                 } else {
-                    this.getInventory().setItem(i, item);
+                    this.getInventory().setItem(i, item.cloneWithId());
                     i++;
                 }
             }
