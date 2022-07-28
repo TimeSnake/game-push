@@ -82,7 +82,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     @Override
     public PushGame getGame() {
-        return (PushGame) super.getGame();
+        return super.getGame();
     }
 
     @Override
@@ -116,7 +116,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     @Override
     public void onMapLoad() {
-        super.loadMap();
         for (LivingEntity entity : this.getMap().getWorld().getLivingEntities()) {
             entity.remove();
         }
@@ -205,7 +204,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         this.updateBossBar(this.blueWins, this.redWins);
 
-        if (this.lap >= this.getMap().getLaps()) {
+        if (this.blueWins > this.getMap().getLaps() / 2 || this.redWins > this.getMap().getLaps() / 2) {
             this.stopGame();
             return;
         }

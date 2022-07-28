@@ -2,7 +2,6 @@ package de.timesnake.game.push.user;
 
 import de.timesnake.basic.bukkit.util.user.ExItemStack;
 import de.timesnake.basic.loungebridge.util.user.Kit;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
@@ -19,7 +18,7 @@ public class PushKit extends Kit {
 
     public static final PushKit BARBAR = new PushKit(1, "Barbar", Material.IRON_AXE,
             List.of("§7Stone Sword", "§7Iron, Chainmail Armor", "", "§7Instant Heal, Strength"),
-            List.of(new ExItemStack(Material.DIAMOND_HELMET).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 2),
+            List.of(new ExItemStack(Material.DIAMOND_HELMET).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.IRON_CHESTPLATE).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.IRON_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.DIAMOND_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false),
@@ -46,11 +45,12 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.GOLDEN_CHESTPLATE).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
                     new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
                     new ExItemStack(Material.GOLDEN_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.DEPTH_STRIDER, 4),
-                    new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 2).setUnbreakable(true).setDropable(false),
+                    new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 3).setUnbreakable(true).setDropable(false),
                     new ExItemStack(false, "§6Speed (30s)", PotionEffectType.SPEED, 30 * 20, 1, 1).setSlot(1).setDropable(false),
                     new ExItemStack(true, "§6Speed (15s)", PotionEffectType.SPEED, 15 * 20, 1, 2).setSlot(2).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
 
+    /*
     public static final PushKit THIEF = new PushKit(4, "Thief", Material.LEATHER,
             List.of("§7Iron Sword", "§7Leather Armor", "", "§7Jump Boost, Invisibility"),
             List.of(new ExItemStack(Material.LEATHER_HELMET, Color.BLACK).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
@@ -61,6 +61,7 @@ public class PushKit extends Kit {
                     SpecialItemManager.JUMP_BOOST.getItem().cloneWithId().setSlot(1).enchant(),
                     new ExItemStack(false, "§6Invisibility (7s)", PotionEffectType.INVISIBILITY, 7 * 20, 1, 1).setSlot(2).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
+     */
 
     public static final PushKit KNIGHT = new PushKit(5, "Knight", Material.DIAMOND_CHESTPLATE,
             List.of("§7Netherite Shovel", "§7Diamond Armor", "", "§7Turtle Master"),
@@ -68,13 +69,13 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.DIAMOND_CHESTPLATE).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.DIAMOND_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.DIAMOND_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false),
-                    new ExItemStack(0, Material.NETHERITE_SHOVEL).addExEnchantment(Enchantment.SWEEPING_EDGE, 3).setUnbreakable(true).setDropable(false),
+                    new ExItemStack(0, Material.DIAMOND_SHOVEL).addExEnchantment(Enchantment.SWEEPING_EDGE, 2).setUnbreakable(true).setDropable(false),
                     SpecialItemManager.TURTLE_MASTER.getItem().cloneWithId().setSlot(1).enchant(),
                     //new ExItemStack(false, "§6Regeneration (10s)", PotionEffectType.REGENERATION, 10 * 20, 2, 1).setSlot(7).setDropable(false),
                     FOOD.cloneWithId().asQuantity(16).setSlot(8)));
 
 
-    public static final PushKit[] KITS = {BARBAR, ARCHER, ASSASSIN, THIEF, KNIGHT};
+    public static final PushKit[] KITS = {BARBAR, ARCHER, ASSASSIN, KNIGHT}; // THIEF
 
     public PushKit(Integer id, String name, Material material, List<String> description, List<ItemStack> items) {
         super(id, name, material, description, items);
