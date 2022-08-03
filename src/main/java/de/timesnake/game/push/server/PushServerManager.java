@@ -124,7 +124,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     @Override
-    public void prepareGame() {
+    public void onGamePrepare() {
         this.lap = 0;
         this.updateSideboardLap();
 
@@ -254,7 +254,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     }
 
-    public void stopGame() {
+    @Override
+    public void onGameStop() {
         Team blueTeam = this.getGame().getBlueTeam();
         Team redTeam = this.getGame().getRedTeam();
 
@@ -273,9 +274,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         } else {
             Server.broadcastTitle("Draw", "", Duration.ofSeconds(5));
         }
-
-        super.closeGame();
-
     }
 
     public void updateSideboardLap() {
@@ -322,14 +320,10 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     @Override
-    public void resetGame() {
+    public void onGameReset() {
         this.blueWins = 0;
         this.redWins = 0;
         this.lap = 0;
-
-        if (this.getMap() != null) {
-            Server.getWorldManager().reloadWorld(this.getMap().getWorld());
-        }
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.IRON_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false),
                     new ExItemStack(Material.DIAMOND_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false),
                     new ExItemStack(0, Material.STONE_SWORD).setUnbreakable(true).setDropable(false),
-                    new ExItemStack(Material.POTION, PotionType.INSTANT_HEAL, false, true).asQuantity(3).setSlot(1).setDropable(false),
+                    ExItemStack.getPotion(Material.POTION, PotionType.INSTANT_HEAL, false, true).asQuantity(3).setSlot(1).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
 
     public static final PushKit ARCHER = new PushKit(2, "Archer", Material.BOW,
@@ -34,7 +34,7 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.LEATHER_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).addExEnchantment(Enchantment.PROTECTION_FALL, 3).setDropable(false),
                     new ExItemStack(0, Material.WOODEN_SWORD).setUnbreakable(true).addExEnchantment(Enchantment.KNOCKBACK, 1).setDropable(false),
                     new ExItemStack(1, Material.BOW).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.ARROW_DAMAGE, 1),
-                    new ExItemStack(true, "§6Poison", PotionEffectType.POISON, 10 * 20, 2, 1).setSlot(2),
+                    ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 1, "§6Poison", PotionEffectType.POISON, 10 * 20, 2).setSlot(2),
                     new ExItemStack(6, Material.ARROW).asQuantity(64),
                     new ExItemStack(7, Material.SPECTRAL_ARROW).asQuantity(8),
                     new ExItemStack(8, Material.GOLDEN_CARROT).asQuantity(8)));
@@ -46,8 +46,8 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
                     new ExItemStack(Material.GOLDEN_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.DEPTH_STRIDER, 4),
                     new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 3).setUnbreakable(true).setDropable(false),
-                    new ExItemStack(false, "§6Speed (30s)", PotionEffectType.SPEED, 30 * 20, 1, 1).setSlot(1).setDropable(false),
-                    new ExItemStack(true, "§6Speed (15s)", PotionEffectType.SPEED, 15 * 20, 1, 2).setSlot(2).setDropable(false),
+                    ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "§6Speed (30s)", PotionEffectType.SPEED, 30 * 20, 1).setSlot(1).setDropable(false),
+                    ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Speed (15s)", PotionEffectType.SPEED, 15 * 20, 1).setSlot(2).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
 
     /*

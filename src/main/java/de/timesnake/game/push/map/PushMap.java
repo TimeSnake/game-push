@@ -4,6 +4,7 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.basic.game.util.Map;
+import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.game.push.main.Plugin;
 import org.bukkit.GameRule;
@@ -14,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class PushMap extends Map {
+public class PushMap extends Map implements ResetableMap {
 
     private static final int VILLAGER_SPAWN_INDEX = 0;
     private static final int BLUE_SPAWN = 10;

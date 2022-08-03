@@ -49,20 +49,17 @@ public class UserManager implements Listener {
             return;
         }
 
-        Location loc = e.getBlock().getLocation();
-
-        loc.add(0.5, 0, 0.5);
+        Location loc = e.getBlock().getLocation().add(0.5, 0, 0.5);
 
         TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
 
-        tnt.setFuseTicks(20 * 2);
+        tnt.setFuseTicks(30);
 
         e.getUser().removeCertainItemStack(PushKit.TNT.asOne());
     }
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
-        e.blockList().clear();
         e.setYield(0);
     }
 
