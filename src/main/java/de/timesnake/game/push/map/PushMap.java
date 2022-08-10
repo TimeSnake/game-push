@@ -54,6 +54,7 @@ public class PushMap extends Map implements ResetableMap {
             world.allowBlockPlace(false);
             world.allowFireSpread(false);
             world.allowBlockBreak(false);
+            world.allowEntityBlockBreak(false);
             world.allowEntityExplode(true);
             world.allowBlockBurnUp(false);
             world.allowLightUpInteraction(true);

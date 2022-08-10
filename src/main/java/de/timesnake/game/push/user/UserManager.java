@@ -61,6 +61,7 @@ public class UserManager implements Listener {
     @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
         e.setYield(0);
+        e.blockList().clear();
     }
 
     @EventHandler
