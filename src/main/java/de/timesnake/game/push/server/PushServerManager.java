@@ -20,11 +20,15 @@ import de.timesnake.game.push.user.PushUser;
 import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
 import de.timesnake.library.basic.util.chat.ChatColor;
+import de.timesnake.library.basic.util.chat.ExTextColor;
 import de.timesnake.library.extension.util.chat.Chat;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -109,8 +113,14 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     @Override
+    @Deprecated
     public void broadcastGameMessage(String message) {
         Server.broadcastMessage(Plugin.PUSH, ChatColor.PUBLIC + message);
+    }
+
+    @Override
+    public void broadcastGameMessage(Component message) {
+        Server.broadcastMessage(Plugin.PUSH, message.color(ExTextColor.PUBLIC));
     }
 
 
@@ -139,12 +149,12 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
                     this.getGame().getBlueTeam().getUsers().size() * 20;
 
             for (User user : this.getGame().getBlueTeam().getUsers()) {
-                user.setMaxHealth(health);
+                user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
                 user.setHealth(health);
             }
 
             for (User user : this.getGame().getRedTeam().getUsers()) {
-                user.setMaxHealth(20);
+                user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
                 user.setHealth(20);
             }
         } else if (delta > 0) {
@@ -152,17 +162,17 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
                     this.getGame().getRedTeam().getUsers().size() * 20;
 
             for (User user : this.getGame().getRedTeam().getUsers()) {
-                user.setMaxHealth(health);
+                user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
                 user.setHealth(health);
             }
 
             for (User user : this.getGame().getBlueTeam().getUsers()) {
-                user.setMaxHealth(20);
+                user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
                 user.setHealth(20);
             }
         } else {
             for (User user : Server.getInGameUsers()) {
-                user.setMaxHealth(20);
+                user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
                 user.setHealth(20);
             }
         }
@@ -213,17 +223,21 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         Team redTeam = this.getGame().getRedTeam();
 
         if (blue) {
-            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f scored", "",
+            Server.broadcastTitle(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())
+                            .append(Component.text(" scored", ExTextColor.WHITE)), Component.empty(),
                     Duration.ofSeconds(3));
         } else {
-            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f scored", "",
+            Server.broadcastTitle(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())
+                            .append(Component.text(" scored", ExTextColor.WHITE)), Component.empty(),
                     Duration.ofSeconds(3));
         }
 
-        this.broadcastGameMessage(ChatColor.GOLD + "§lScores: ");
+        this.broadcastGameMessage(Component.text("Scores: ", ExTextColor.GOLD, TextDecoration.BOLD));
         this.broadcastGameMessage(Chat.getLongLineSeparator());
-        this.broadcastGameMessage("    " + this.blueWins + " " + blueTeam.getChatColor() + blueTeam.getDisplayName());
-        this.broadcastGameMessage("    " + this.redWins + " " + redTeam.getChatColor() + redTeam.getDisplayName());
+        this.broadcastGameMessage(Component.text("    " + this.blueWins + " ", ExTextColor.PUBLIC)
+                .append(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())));
+        this.broadcastGameMessage(Component.text("    " + this.redWins + " ", ExTextColor.PUBLIC)
+                .append(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())));
         this.broadcastGameMessage(Chat.getLongLineSeparator());
 
         Server.runTaskLaterSynchrony(() -> {
@@ -242,12 +256,15 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         Server.runTaskTimerSynchrony((time) -> {
             if (time == 0) {
-                this.broadcastGameMessage(ChatColor.PUBLIC + "The Game starts " + ChatColor.VALUE + "now");
+                this.broadcastGameMessage(Component.text("The Game starts ", ExTextColor.PUBLIC)
+                        .append(Component.text("now", ExTextColor.VALUE)));
                 Server.broadcastNote(Instrument.STICKS, Note.natural(1, Note.Tone.A));
                 this.nextLap();
             } else {
-                Server.broadcastTitle(ChatColor.RED + "" + time, "", Duration.ofSeconds(1));
-                this.broadcastGameMessage(ChatColor.PUBLIC + "Next lap starts in " + ChatColor.VALUE + time + ChatColor.PUBLIC + " seconds");
+                Server.broadcastTitle(Component.text(time, ExTextColor.WARNING), Component.empty(), Duration.ofSeconds(1));
+                this.broadcastGameMessage(Component.text("Next lap starts in ", ExTextColor.PUBLIC)
+                        .append(Component.text(time, ExTextColor.VALUE))
+                        .append(Component.text(" seconds", ExTextColor.PUBLIC)));
                 Server.broadcastNote(Instrument.STICKS, Note.natural(1, Note.Tone.A));
             }
         }, 3, true, 3 * 20, 20, GamePush.getPlugin());
@@ -259,20 +276,24 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         Team blueTeam = this.getGame().getBlueTeam();
         Team redTeam = this.getGame().getRedTeam();
 
-        this.broadcastGameMessage(ChatColor.GOLD + "§lResult:");
+        this.broadcastGameMessage(Component.text("Result:", ExTextColor.GOLD, TextDecoration.BOLD));
         this.broadcastGameMessage(Chat.getLongLineSeparator());
-        this.broadcastGameMessage("    " + this.blueWins + " " + blueTeam.getChatColor() + blueTeam.getDisplayName());
-        this.broadcastGameMessage("    " + this.redWins + " " + redTeam.getChatColor() + redTeam.getDisplayName());
+        this.broadcastGameMessage(Component.text("    " + this.blueWins + " ", ExTextColor.PUBLIC)
+                .append(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())));
+        this.broadcastGameMessage(Component.text("    " + this.redWins + " ", ExTextColor.PUBLIC)
+                .append(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())));
         this.broadcastGameMessage(Chat.getLongLineSeparator());
 
         if (this.blueWins > this.redWins) {
-            Server.broadcastTitle(blueTeam.getChatColor() + blueTeam.getDisplayName() + "§f wins", "",
+            Server.broadcastTitle(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())
+                            .append(Component.text(" wins", ExTextColor.WHITE)), Component.empty(),
                     Duration.ofSeconds(5));
         } else if (this.redWins > this.blueWins) {
-            Server.broadcastTitle(redTeam.getChatColor() + redTeam.getDisplayName() + "§f wins", "",
+            Server.broadcastTitle(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())
+                            .append(Component.text(" wins", ExTextColor.WHITE)), Component.empty(),
                     Duration.ofSeconds(5));
         } else {
-            Server.broadcastTitle("Draw", "", Duration.ofSeconds(5));
+            Server.broadcastTitle(Component.text("Draw", ExTextColor.WHITE), Component.empty(), Duration.ofSeconds(5));
         }
     }
 
