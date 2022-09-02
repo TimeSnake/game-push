@@ -45,7 +45,7 @@ public class PushKit extends Kit {
                     new ExItemStack(Material.GOLDEN_CHESTPLATE).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
                     new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
                     new ExItemStack(Material.GOLDEN_BOOTS).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.DEPTH_STRIDER, 4),
-                    new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 3).setUnbreakable(true).setDropable(false),
+                    new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(Enchantment.DAMAGE_ALL, 5).setUnbreakable(true).setDropable(false),
                     ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "§6Speed (30s)", PotionEffectType.SPEED, 30 * 20, 1).setSlot(1).setDropable(false),
                     ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Speed (15s)", PotionEffectType.SPEED, 15 * 20, 1).setSlot(2).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
