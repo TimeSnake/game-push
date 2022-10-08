@@ -153,7 +153,7 @@ public class EscortManager {
     private void moveTo(boolean blue, double speed) {
         double distance = this.zombie.getLocation().distance(this.currentPathPoint.getLocation().middleBlock());
 
-        if (distance > 2 && this.lastDirectionBlue == blue) {
+        if (distance > 1.5 && this.lastDirectionBlue == blue) {
             return;
         }
 
