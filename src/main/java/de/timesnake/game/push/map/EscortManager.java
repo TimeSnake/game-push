@@ -95,7 +95,7 @@ public class EscortManager {
             this.zombie.remove();
         }
 
-        this.zombie = new ExZombie(map.getWorld().getBukkitWorld(), false);
+        this.zombie = new ExZombie(map.getWorld().getBukkitWorld(), false, false);
 
         this.zombie.setInvulnerable(true);
         this.zombie.setPersistent(true);
