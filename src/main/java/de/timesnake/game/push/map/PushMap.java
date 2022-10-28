@@ -69,16 +69,16 @@ public class PushMap extends Map implements ResetableMap {
         ExWorld world = this.getWorld();
         if (world != null) {
             Server.getWorldManager().backupWorld(world);
-            world.allowBlockPlace(false);
-            world.allowFireSpread(false);
-            world.allowBlockBreak(false);
-            world.allowEntityBlockBreak(false);
-            world.allowEntityExplode(true);
-            world.allowBlockBurnUp(false);
-            world.allowLightUpInteraction(true);
-            world.allowFluidCollect(false);
-            world.allowFluidPlace(false);
-            world.allowFlintAndSteel(true);
+            world.restrict(ExWorld.Restriction.BLOCK_PLACE, true);
+            world.restrict(ExWorld.Restriction.FIRE_SPREAD, true);
+            world.restrict(ExWorld.Restriction.BLOCK_BREAK, true);
+            world.restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
+            world.restrict(ExWorld.Restriction.ENTITY_EXPLODE, false);
+            world.restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
+            world.restrict(ExWorld.Restriction.LIGHT_UP_INTERACTION, false);
+            world.restrict(ExWorld.Restriction.FLUID_COLLECT, true);
+            world.restrict(ExWorld.Restriction.FLUID_PLACE, true);
+            world.restrict(ExWorld.Restriction.FLINT_AND_STEEL, true);
             world.setExceptService(true);
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
