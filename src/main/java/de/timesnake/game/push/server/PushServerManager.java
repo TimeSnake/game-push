@@ -1,5 +1,5 @@
 /*
- * game-push.main
+ * timesnake.game-push.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         this.setTeamMateDamage(false);
 
-        this.sideboard = Server.getScoreboardManager().registerNewSideboard("push", "§6§lPush");
+        this.sideboard = Server.getScoreboardManager().registerSideboard("push", "§6§lPush");
         this.sideboard.setScore(4, "§c§lLap");
         // lap
         this.sideboard.setScore(2, "§r§f-----------");
