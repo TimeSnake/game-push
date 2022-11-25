@@ -1,5 +1,5 @@
 /*
- * game-push.main
+ * workspace.game-push.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
 
 package de.timesnake.game.push.server;
 
-import de.timesnake.basic.bukkit.util.exceptions.UnsupportedGroupRankException;
+import de.timesnake.basic.bukkit.util.exception.UnsupportedGroupRankException;
 import de.timesnake.basic.game.util.Kit;
 import de.timesnake.basic.game.util.Team;
 import de.timesnake.basic.game.util.TmpGame;
