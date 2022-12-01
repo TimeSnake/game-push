@@ -1,5 +1,5 @@
 /*
- * game-push.main
+ * workspace.game-push.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
 import de.timesnake.library.entities.pathfinder.custom.CustomPathfinderGoalUpdatedLocation;
 import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalUpdatedLocation;
-import de.timesnake.library.reflection.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
