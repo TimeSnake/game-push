@@ -1,5 +1,5 @@
 /*
- * timesnake.game-push.main
+ * workspace.game-push.main
  * Copyright (C) 2022 timesnake
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,8 @@ package de.timesnake.game.push.server;
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
-import de.timesnake.basic.game.util.Team;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
+import de.timesnake.basic.game.util.game.Team;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
@@ -44,7 +45,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
-import org.bukkit.Location;
 import org.bukkit.Note;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
@@ -386,7 +386,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     @Override
-    public Location getSpectatorSpawn() {
+    public ExLocation getSpectatorSpawn() {
         return this.getMap().getZombieSpawn();
     }
 
