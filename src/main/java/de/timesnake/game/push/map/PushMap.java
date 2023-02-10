@@ -11,13 +11,12 @@ import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.game.push.main.Plugin;
-import org.bukkit.GameRule;
-import org.bukkit.Material;
-import org.bukkit.util.Vector;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import org.bukkit.GameRule;
+import org.bukkit.Material;
+import org.bukkit.util.Vector;
 
 public class PushMap extends Map implements ResetableMap {
 
@@ -30,14 +29,20 @@ public class PushMap extends Map implements ResetableMap {
     // x0 -> villager finish
     // x[0-10] -> team spawns
 
-    private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0), new Vector(0, 0,
-            -1), new Vector(0, 0, 1));
-    private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1), new Vector(-1, 0, 1), new Vector(1, 0
-                    , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0), new Vector(1, -1, 0),
-            new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1,
+    private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0),
+            new Vector(0, 0,
+                    -1), new Vector(0, 0, 1));
+    private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1),
+            new Vector(-1, 0, 1), new Vector(1, 0
+                    , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0),
+            new Vector(1, -1, 0),
+            new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1),
+            new Vector(0, 1,
                     1));
-    private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1), new Vector(-1, -1, 1),
-            new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1), new Vector(1, -1, 1), new Vector(1, 1
+    private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1),
+            new Vector(-1, -1, 1),
+            new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1),
+            new Vector(1, -1, 1), new Vector(1, 1
                     , -1), new Vector(1, 1, 1));
 
     private final List<Material> villagerPathMaterials = new LinkedList<>();
@@ -54,7 +59,6 @@ public class PushMap extends Map implements ResetableMap {
 
         ExWorld world = this.getWorld();
         if (world != null) {
-            Server.getWorldManager().backupWorld(world);
             world.restrict(ExWorld.Restriction.BLOCK_PLACE, true);
             world.restrict(ExWorld.Restriction.FIRE_SPREAD, true);
             world.restrict(ExWorld.Restriction.BLOCK_BREAK, true);
@@ -94,7 +98,8 @@ public class PushMap extends Map implements ResetableMap {
 
         if (this.villagerPathMaterials.isEmpty()) {
             Server.printWarning(Plugin.PUSH,
-                    "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0), "Map");
+                    "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0),
+                    "Map");
             this.villagerPathMaterials.add(Material.BEDROCK);
         }
 
@@ -133,7 +138,8 @@ public class PushMap extends Map implements ResetableMap {
 
         if (firstToBlue == null || firstToRed == null) {
             Server.printWarning(Plugin.PUSH,
-                    "No directions to blue/red found " + this.getName() + ": " + super.getInfo().get(0), "Map");
+                    "No directions to blue/red found " + this.getName() + ": " + super.getInfo()
+                            .get(0), "Map");
             firstToBlue = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
             this.spawnPoint.setNextToBlue(firstToBlue);
             firstToRed = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
@@ -172,8 +178,9 @@ public class PushMap extends Map implements ResetableMap {
         for (List<Vector> vecs : List.of(STRAIGHT, DIAGONAL, TETRAGONAL)) {
             for (Vector vec : vecs) {
                 ExLocation nearLoc = current.clone().add(vec).middleBlock();
-                if (!this.spawnPoint.contains(nearLoc) && this.villagerPathMaterials.contains(nearLoc.clone().add(0,
-                        -1, 0).getBlock().getType())) {
+                if (!this.spawnPoint.contains(nearLoc) && this.villagerPathMaterials.contains(
+                        nearLoc.clone().add(0,
+                                -1, 0).getBlock().getType())) {
                     return nearLoc;
                 }
             }
@@ -198,11 +205,13 @@ public class PushMap extends Map implements ResetableMap {
     }
 
     public ExLocation getRandomBlueSpawn() {
-        return super.getLocation(this.blueSpawnIndizes.get(new Random().nextInt(this.blueSpawnIndizes.size())));
+        return super.getLocation(
+                this.blueSpawnIndizes.get(new Random().nextInt(this.blueSpawnIndizes.size())));
     }
 
     public ExLocation getRandomRedSpawn() {
-        return super.getLocation(this.redSpawnIndizes.get(new Random().nextInt(this.redSpawnIndizes.size())));
+        return super.getLocation(
+                this.redSpawnIndizes.get(new Random().nextInt(this.redSpawnIndizes.size())));
     }
 
     public PathPoint getSpawnPoint() {

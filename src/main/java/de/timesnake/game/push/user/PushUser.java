@@ -4,7 +4,7 @@
 
 package de.timesnake.game.push.user;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.push.server.PushServer;
 import org.bukkit.GameMode;
