@@ -4,7 +4,7 @@
 
 package de.timesnake.game.push.user;
 
-import de.timesnake.basic.bukkit.util.user.ExItemStack;
+import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.loungebridge.util.user.Kit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
