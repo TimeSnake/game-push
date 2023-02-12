@@ -24,9 +24,10 @@ import de.timesnake.game.push.user.PushKit;
 import de.timesnake.game.push.user.PushUser;
 import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
-import de.timesnake.library.basic.util.chat.ChatColor;
-import de.timesnake.library.basic.util.chat.ExTextColor;
+import de.timesnake.library.chat.ChatColor;
+import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.chat.Chat;
+import java.time.Duration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -38,8 +39,6 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-
-import java.time.Duration;
 
 public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
@@ -119,7 +118,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     @Override
     @Deprecated
     public void broadcastGameMessage(String message) {
-        Server.broadcastMessage(Plugin.PUSH, ChatColor.PUBLIC + message);
+        Server.broadcastTDMessage(Plugin.PUSH, ChatColor.PUBLIC + message);
     }
 
     @Override
@@ -147,7 +146,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     @Override
     public void onGameStart() {
-        int delta = this.getGame().getBlueTeam().getUsers().size() - this.getGame().getRedTeam().getUsers().size();
+        int delta = this.getGame().getBlueTeam().getUsers().size() - this.getGame().getRedTeam()
+                .getUsers().size();
         if (delta < 0) {
             double health = ((double) this.getGame().getRedTeam().getUsers().size()) /
                     this.getGame().getBlueTeam().getUsers().size() * 20;
@@ -218,7 +218,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         this.updateBossBar(this.blueWins, this.redWins);
 
-        if (this.blueWins > this.getMap().getLaps() / 2 || this.redWins > this.getMap().getLaps() / 2) {
+        if (this.blueWins > this.getMap().getLaps() / 2
+                || this.redWins > this.getMap().getLaps() / 2) {
             this.stopGame();
             return;
         }
@@ -236,7 +237,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
                     Duration.ofSeconds(3));
         }
 
-        this.broadcastGameMessage(Component.text("Scores: ", ExTextColor.GOLD, TextDecoration.BOLD));
+        this.broadcastGameMessage(
+                Component.text("Scores: ", ExTextColor.GOLD, TextDecoration.BOLD));
         this.broadcastGameMessage(Chat.getLongLineSeparator());
         this.broadcastGameMessage(Component.text("    " + this.blueWins + " ", ExTextColor.PUBLIC)
                 .append(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())));
@@ -265,7 +267,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
                 Server.broadcastNote(Instrument.STICKS, Note.natural(1, Note.Tone.A));
                 this.nextLap();
             } else {
-                Server.broadcastTitle(Component.text(time, ExTextColor.WARNING), Component.empty(), Duration.ofSeconds(1));
+                Server.broadcastTitle(Component.text(time, ExTextColor.WARNING), Component.empty(),
+                        Duration.ofSeconds(1));
                 this.broadcastGameMessage(Component.text("Next lap starts in ", ExTextColor.PUBLIC)
                         .append(Component.text(time, ExTextColor.VALUE))
                         .append(Component.text(" seconds", ExTextColor.PUBLIC)));
@@ -297,7 +300,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
                             .append(Component.text(" wins", ExTextColor.WHITE)), Component.empty(),
                     Duration.ofSeconds(5));
         } else {
-            Server.broadcastTitle(Component.text("Draw", ExTextColor.WHITE), Component.empty(), Duration.ofSeconds(5));
+            Server.broadcastTitle(Component.text("Draw", ExTextColor.WHITE), Component.empty(),
+                    Duration.ofSeconds(5));
         }
     }
 
@@ -309,8 +313,9 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         Team blue = this.getGame().getBlueTeam();
         Team red = this.getGame().getRedTeam();
 
-        this.bossBar.setTitle(blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
-                "§6" + redWins + "§f - " + red.getChatColor() + red.getDisplayName());
+        this.bossBar.setTitle(
+                blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
+                        "§6" + redWins + "§f - " + red.getChatColor() + red.getDisplayName());
 
         if (blueWins > redWins) {
             this.bossBar.setColor(BarColor.BLUE);
