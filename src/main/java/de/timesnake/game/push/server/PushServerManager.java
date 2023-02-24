@@ -6,6 +6,9 @@ package de.timesnake.game.push.server;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard.LineId;
+import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboardBuilder;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Team;
@@ -24,7 +27,6 @@ import de.timesnake.game.push.user.PushKit;
 import de.timesnake.game.push.user.PushUser;
 import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
-import de.timesnake.library.chat.ChatColor;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.chat.Chat;
 import java.time.Duration;
@@ -42,15 +44,16 @@ import org.bukkit.entity.Player;
 
 public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
+    public static final LineId<String> LAP_LINE = LineId.of("lap", "§c§lLap", false, Object::toString);
+
     public static PushServerManager getInstance() {
         return (PushServerManager) LoungeBridgeServerManager.getInstance();
     }
 
-    private boolean isRunning;
     private int lap = 0;
     private EscortManager escortManager;
     private UserManager userManager;
-    private Sideboard sideboard;
+    private ExSideboard sideboard;
     private int blueWins = 0;
     private int redWins = 0;
     private SpecialItemManager specialItemManager;
@@ -64,12 +67,12 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         this.setTeamMateDamage(false);
 
-        this.sideboard = Server.getScoreboardManager().registerSideboard("push", "§6§lPush");
-        this.sideboard.setScore(4, "§c§lLap");
-        // lap
-        this.sideboard.setScore(2, "§r§f-----------");
-        this.sideboard.setScore(1, "§9§lMap");
-        // map
+        this.sideboard = Server.getScoreboardManager().registerExSideboard(new ExSideboardBuilder()
+                .name("push")
+                .title("§6§lPush")
+                .lineSpacer()
+                .addLine(LAP_LINE)
+                .addLine(LineId.MAP));
 
         this.specialItemManager = new SpecialItemManager();
 
@@ -111,29 +114,12 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     @Override
-    public boolean isGameRunning() {
-        return this.isRunning;
-    }
-
-    @Override
-    @Deprecated
-    public void broadcastGameMessage(String message) {
-        Server.broadcastTDMessage(Plugin.PUSH, ChatColor.PUBLIC + message);
-    }
-
-    @Override
-    public void broadcastGameMessage(Component message) {
-        Server.broadcastMessage(Plugin.PUSH, message.color(ExTextColor.PUBLIC));
-    }
-
-
-    @Override
     public void onMapLoad() {
         for (LivingEntity entity : this.getMap().getWorld().getLivingEntities()) {
             entity.remove();
         }
 
-        this.sideboard.setScore(0, this.getMap().getDisplayName());
+        this.sideboard.updateScore(LineId.MAP, this.getMap().getDisplayName());
     }
 
     @Override
@@ -186,7 +172,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     private void nextLap() {
         this.lap++;
-        this.isRunning = true;
 
         this.updateSideboardLap();
 
@@ -203,8 +188,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     public void onFinishReached(boolean blue) {
-        this.isRunning = false;
-
         this.escortManager.stop();
         for (ItemSpawner spawner : this.getMap().getItemSpawners()) {
             spawner.stop();
@@ -306,7 +289,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     }
 
     public void updateSideboardLap() {
-        this.sideboard.setScore(3, this.lap + " §7/ §f" + this.getMap().getLaps());
+        this.sideboard.updateScore(LAP_LINE, this.lap + " §7/ §f" + this.getMap().getLaps());
     }
 
     public void updateBossBar(int blueWins, int redWins) {
