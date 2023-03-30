@@ -4,13 +4,12 @@
 
 package de.timesnake.game.push.map;
 
-import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
-import de.timesnake.game.push.main.Plugin;
+import de.timesnake.library.basic.util.Loggers;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -89,17 +88,16 @@ public class PushMap extends Map implements ResetableMap {
             Material material = Material.getMaterial(materialName.toUpperCase());
 
             if (material == null) {
-                Server.printWarning(Plugin.PUSH,
-                        "Unknown material for map " + this.getName() + ": " + materialName, "Map");
+                Loggers.GAME.warning(
+                        "Unknown material for map " + this.getName() + ": " + materialName);
             } else {
                 this.villagerPathMaterials.add(material);
             }
         }
 
         if (this.villagerPathMaterials.isEmpty()) {
-            Server.printWarning(Plugin.PUSH,
-                    "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0),
-                    "Map");
+            Loggers.GAME.warning(
+                    "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0));
             this.villagerPathMaterials.add(Material.BEDROCK);
         }
 
@@ -137,9 +135,9 @@ public class PushMap extends Map implements ResetableMap {
         }
 
         if (firstToBlue == null || firstToRed == null) {
-            Server.printWarning(Plugin.PUSH,
+            Loggers.GAME.warning(
                     "No directions to blue/red found " + this.getName() + ": " + super.getInfo()
-                            .get(0), "Map");
+                            .get(0));
             firstToBlue = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
             this.spawnPoint.setNextToBlue(firstToBlue);
             firstToRed = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
