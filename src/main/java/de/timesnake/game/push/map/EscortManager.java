@@ -8,9 +8,9 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.push.main.GamePush;
-import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.server.PushServer;
 import de.timesnake.game.push.user.PushUser;
+import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
@@ -90,7 +90,8 @@ public class EscortManager {
         this.zombie.setCustomName("Zombie");
         this.zombie.setCustomNameVisible(false);
 
-        this.zombie.setSlot(ExEnumItemSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true));
+        this.zombie.setSlot(ExEnumItemSlot.HEAD,
+                new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true));
 
         this.pathfinder = new CustomPathfinderGoalUpdatedLocation(null, this.baseSpeed, 32, 0.2) {
             @Override
@@ -112,7 +113,7 @@ public class EscortManager {
 
         EntityManager.spawnEntity(map.getWorld().getBukkitWorld(), this.zombie);
 
-        Server.printText(Plugin.PUSH, "Spawned zombie");
+        Loggers.GAME.info("Spawned zombie");
     }
 
     public void runMoveTask() {
@@ -155,7 +156,8 @@ public class EscortManager {
     }
 
     private void moveTo(boolean blue, double speed) {
-        double distance = this.zombie.getLocation().distance(this.currentPathPoint.getLocation().middleBlock());
+        double distance = this.zombie.getLocation()
+                .distance(this.currentPathPoint.getLocation().middleBlock());
 
         if (distance > 1.5 && this.lastDirectionBlue == blue) {
             return;
@@ -165,7 +167,9 @@ public class EscortManager {
 
         PathPoint next = this.currentPathPoint;
 
-        while (next != null && next.getLocation().distance(this.currentPathPoint.getLocation().middleBlock()) <= 2.1) {
+        while (next != null
+                && next.getLocation().distance(this.currentPathPoint.getLocation().middleBlock())
+                <= 2.1) {
             if (blue) {
                 next = next.getNextToBlue();
             } else {
