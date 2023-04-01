@@ -35,7 +35,9 @@ public class PushUser extends GameUser {
     }
 
     @Override
-    public void joinGame() {
+    public void onGameJoin() {
+        super.onGameJoin();
+
         if (this.getTeam().equals(PushServer.getGame().getBlueTeam())) {
             this.teleport(PushServer.getMap().getRandomBlueSpawn());
         } else {
