@@ -49,9 +49,8 @@ public class PushUser extends GameUser {
         this.setItems();
         this.setGameMode(GameMode.SURVIVAL);
 
-        this.setGravity(true);
         this.setInvulnerable(true);
-        this.lockLocation(true);
+        this.lockLocation();
 
         this.setBossBar(PushServer.getBossBar());
     }
