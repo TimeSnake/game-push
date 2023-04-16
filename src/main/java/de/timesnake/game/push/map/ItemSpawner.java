@@ -8,17 +8,17 @@ import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.push.main.GamePush;
-import de.timesnake.game.push.user.PushKit;
+import de.timesnake.game.push.user.PushKitManager;
+import java.util.List;
+import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
-import java.util.Random;
-
 public class ItemSpawner {
 
-    private static final List<ExItemStack> ITEMS = List.of(new ExItemStack(Material.GOLDEN_APPLE), PushKit.TNT,
-            PushKit.FOOD.cloneWithId().asQuantity(3), new ExItemStack(Material.ENDER_PEARL));
+    private static final List<ExItemStack> ITEMS = List.of(new ExItemStack(Material.GOLDEN_APPLE),
+            PushKitManager.TNT,
+            PushKitManager.FOOD.cloneWithId().asQuantity(3), new ExItemStack(Material.ENDER_PEARL));
 
     private static final int DELAY_BASE = 10; // sec * 2
     private static final int DELAY_RANGE = 10; // sec * 2
@@ -38,7 +38,8 @@ public class ItemSpawner {
             delay--;
 
             if (delay <= 0) {
-                this.location.getWorld().dropItem(this.location, ITEMS.get(this.random.nextInt(ITEMS.size())));
+                this.location.getWorld()
+                        .dropItem(this.location, ITEMS.get(this.random.nextInt(ITEMS.size())));
                 this.delay = this.random.nextInt(DELAY_RANGE) + DELAY_BASE;
             }
         }, 20, 40, GamePush.getPlugin());

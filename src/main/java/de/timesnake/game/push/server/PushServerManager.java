@@ -14,8 +14,6 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Team;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
-import de.timesnake.basic.loungebridge.util.user.Kit;
-import de.timesnake.basic.loungebridge.util.user.KitNotDefinedException;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.push.main.GamePush;
@@ -23,7 +21,6 @@ import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.map.EscortManager;
 import de.timesnake.game.push.map.ItemSpawner;
 import de.timesnake.game.push.map.PushMap;
-import de.timesnake.game.push.user.PushKit;
 import de.timesnake.game.push.user.PushUser;
 import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
@@ -44,7 +41,8 @@ import org.bukkit.entity.Player;
 
 public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
-    public static final LineId<String> LAP_LINE = LineId.of("lap", "§c§lLap", false, Object::toString);
+    public static final LineId<String> LAP_LINE = LineId.of("lap", "§c§lLap", false,
+            Object::toString);
 
     public static PushServerManager getInstance() {
         return (PushServerManager) LoungeBridgeServerManager.getInstance();
@@ -78,7 +76,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         this.bossBar = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
     }
-
 
     @Override
     protected PushGame loadGame(DbGame dbGame, boolean loadWorlds) {
@@ -337,21 +334,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         this.blueWins = 0;
         this.redWins = 0;
         this.lap = 0;
-    }
-
-    @Override
-    public Kit getKit(int index) throws KitNotDefinedException {
-        for (PushKit kit : PushKit.KITS) {
-            if (kit.getId().equals(index)) {
-                return kit;
-            }
-        }
-        throw new KitNotDefinedException(index);
-    }
-
-    @Override
-    public Kit[] getKits() {
-        return PushKit.KITS;
     }
 
     @Override

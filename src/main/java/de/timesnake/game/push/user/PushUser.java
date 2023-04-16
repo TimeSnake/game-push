@@ -57,7 +57,7 @@ public class PushUser extends GameUser {
 
     private void setItems() {
         if (PushServer.areKitsEnabled()) {
-            this.setKitItems();
+            this.applyKit();
         } else {
             int i = 0;
             for (ExItemStack item : DEFAULT) {
