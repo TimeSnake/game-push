@@ -5,15 +5,14 @@
 package de.timesnake.game.push.server;
 
 import de.timesnake.basic.bukkit.util.exception.UnsupportedGroupRankException;
-import de.timesnake.basic.game.util.game.Kit;
 import de.timesnake.basic.game.util.game.Team;
-import de.timesnake.basic.game.util.game.TmpGame;
-import de.timesnake.database.util.game.DbKit;
+import de.timesnake.basic.loungebridge.util.game.TmpGame;
+import de.timesnake.basic.loungebridge.util.user.KitManager;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.database.util.game.DbTeam;
 import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.push.map.PushMap;
-import de.timesnake.game.push.user.PushKit;
+import de.timesnake.game.push.user.PushKitManager;
 
 public class PushGame extends TmpGame {
 
@@ -35,14 +34,8 @@ public class PushGame extends TmpGame {
     }
 
     @Override
-    public Kit loadKit(DbKit dbKit) {
-        int dbId = dbKit.getId();
-        for (PushKit kit : PushKit.KITS) {
-            if (kit.getId().equals(dbId)) {
-                return kit;
-            }
-        }
-        return null;
+    public KitManager<?> loadKitManager() {
+        return new PushKitManager();
     }
 
     public Team getBlueTeam() {

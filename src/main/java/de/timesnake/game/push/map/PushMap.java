@@ -10,6 +10,7 @@ import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.library.basic.util.Loggers;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -19,14 +20,14 @@ import org.bukkit.util.Vector;
 
 public class PushMap extends Map implements ResetableMap {
 
-    private static final int VILLAGER_SPAWN_INDEX = 0;
+    private static final int ZOMBIE_SPAWN_INDEX = 0;
     private static final int BLUE_SPAWN = 10;
     private static final int RED_SPAWN = 20;
 
     private static final int ITEM_SPAWNERS = 100;
 
     // x0 -> villager finish
-    // x[0-10] -> team spawns
+    // x[1-10] -> team spawns
 
     private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0),
             new Vector(0, 0,
@@ -47,7 +48,7 @@ public class PushMap extends Map implements ResetableMap {
     private final List<Material> villagerPathMaterials = new LinkedList<>();
     private final int laps;
 
-    private final PathPoint spawnPoint;
+    private PathPoint spawnPoint;
     private final List<ItemSpawner> itemSpawners = new LinkedList<>();
 
     private final LinkedList<Integer> blueSpawnIndizes = new LinkedList<>();
@@ -99,6 +100,11 @@ public class PushMap extends Map implements ResetableMap {
             Loggers.GAME.warning(
                     "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0));
             this.villagerPathMaterials.add(Material.BEDROCK);
+        }
+
+        if (this.getZombieSpawn() == null) {
+            Loggers.GAME.warning("Missing zombie location in map " + this.getName());
+            return;
         }
 
         this.spawnPoint = new PathPoint(this.getZombieSpawn().clone().middleBlock());
@@ -191,7 +197,7 @@ public class PushMap extends Map implements ResetableMap {
     }
 
     public ExLocation getZombieSpawn() {
-        return super.getLocation(VILLAGER_SPAWN_INDEX);
+        return super.getLocation(ZOMBIE_SPAWN_INDEX);
     }
 
     public ExLocation getBlueFinish() {
@@ -207,9 +213,17 @@ public class PushMap extends Map implements ResetableMap {
                 this.blueSpawnIndizes.get(new Random().nextInt(this.blueSpawnIndizes.size())));
     }
 
+    public Collection<ExLocation> getBlueSpawns() {
+        return super.getLocations(this.blueSpawnIndizes);
+    }
+
     public ExLocation getRandomRedSpawn() {
         return super.getLocation(
                 this.redSpawnIndizes.get(new Random().nextInt(this.redSpawnIndizes.size())));
+    }
+
+    public Collection<ExLocation> getRedSpawns() {
+        return super.getLocations(this.redSpawnIndizes);
     }
 
     public PathPoint getSpawnPoint() {

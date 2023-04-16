@@ -6,7 +6,11 @@ package de.timesnake.game.push.user;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.event.*;
+import de.timesnake.basic.bukkit.util.user.event.UserBlockPlaceEvent;
+import de.timesnake.basic.bukkit.util.user.event.UserDamageEvent;
+import de.timesnake.basic.bukkit.util.user.event.UserDeathEvent;
+import de.timesnake.basic.bukkit.util.user.event.UserDropItemEvent;
+import de.timesnake.basic.bukkit.util.user.event.UserRespawnEvent;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.server.PushServer;
 import de.timesnake.library.entities.entity.bukkit.ExZombie;
@@ -59,7 +63,7 @@ public class UserManager implements Listener {
 
         tnt.setFuseTicks(30);
 
-        e.getUser().removeCertainItemStack(PushKit.TNT.asOne());
+        e.getUser().removeCertainItemStack(PushKitManager.TNT.asOne());
     }
 
     @EventHandler
@@ -74,7 +78,8 @@ public class UserManager implements Listener {
 
         if (material.equals(Material.GLASS_BOTTLE)) {
             e.setCancelled(true);
-            Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1, GamePush.getPlugin());
+            Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1,
+                    GamePush.getPlugin());
         }
     }
 
@@ -92,7 +97,8 @@ public class UserManager implements Listener {
     public void onUserDamage(UserDamageEvent e) {
         User user = e.getUser();
 
-        if (((PushUser) user).getKit() == null || !((PushUser) user).getKit().equals(PushKit.BARBAR)) {
+        if (((PushUser) user).getKit() == null || !((PushUser) user).getKit()
+                .equals(PushKitManager.BARBAR)) {
             return;
         }
 
