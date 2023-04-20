@@ -6,6 +6,7 @@ package de.timesnake.game.push.map;
 
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.bukkit.util.world.ExWorld;
+import de.timesnake.basic.bukkit.util.world.ExWorld.Restriction;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
@@ -59,16 +60,17 @@ public class PushMap extends Map implements ResetableMap {
 
         ExWorld world = this.getWorld();
         if (world != null) {
-            world.restrict(ExWorld.Restriction.BLOCK_PLACE, true);
-            world.restrict(ExWorld.Restriction.FIRE_SPREAD, true);
-            world.restrict(ExWorld.Restriction.BLOCK_BREAK, true);
-            world.restrict(ExWorld.Restriction.ENTITY_BLOCK_BREAK, true);
-            world.restrict(ExWorld.Restriction.ENTITY_EXPLODE, false);
-            world.restrict(ExWorld.Restriction.BLOCK_BURN_UP, true);
-            world.restrict(ExWorld.Restriction.LIGHT_UP_INTERACTION, false);
-            world.restrict(ExWorld.Restriction.FLUID_COLLECT, true);
-            world.restrict(ExWorld.Restriction.FLUID_PLACE, true);
-            world.restrict(ExWorld.Restriction.FLINT_AND_STEEL, true);
+            world.restrict(Restriction.BLOCK_PLACE, true);
+            world.restrict(Restriction.FIRE_SPREAD, true);
+            world.restrict(Restriction.BLOCK_BREAK, true);
+            world.restrict(Restriction.ENTITY_BLOCK_BREAK, true);
+            world.restrict(Restriction.ENTITY_EXPLODE, false);
+            world.restrict(Restriction.BLOCK_BURN_UP, true);
+            world.restrict(Restriction.LIGHT_UP_INTERACTION, false);
+            world.restrict(Restriction.FLUID_COLLECT, true);
+            world.restrict(Restriction.FLUID_PLACE, true);
+            world.restrict(Restriction.FLINT_AND_STEEL, true);
+            world.restrict(Restriction.OPEN_INVENTORIES, List.of(Material.AIR));
             world.setExceptService(true);
             world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
