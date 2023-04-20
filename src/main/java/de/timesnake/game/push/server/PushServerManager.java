@@ -13,6 +13,8 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Team;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
+import de.timesnake.basic.loungebridge.util.tool.listener.GameUserDeathListener;
+import de.timesnake.basic.loungebridge.util.tool.listener.GameUserRespawnListener;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbTmpGame;
@@ -75,6 +77,22 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         this.specialItemManager = new SpecialItemManager();
 
         this.bossBar = Bukkit.createBossBar("", BarColor.WHITE, BarStyle.SOLID);
+
+        this.getToolManager().add((GameUserDeathListener) (e, user) -> {
+            e.setAutoRespawn(true);
+            e.getDrops().clear();
+            e.setKeepInventory(false);
+        });
+
+        this.getToolManager().add((GameUserRespawnListener) user -> {
+            user.respawnDelayed(3);
+
+            if (user.getTeam().equals(PushServer.getGame().getBlueTeam())) {
+                return PushServer.getMap().getRandomBlueSpawn();
+            } else {
+                return PushServer.getMap().getRandomRedSpawn();
+            }
+        });
     }
 
     @Override
@@ -173,7 +191,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         this.updateSideboardLap();
 
         for (User user : Server.getInGameUsers()) {
-            user.lockLocation(false);
+            user.unlockLocation();
             user.setGravity(true);
             user.setInvulnerable(false);
         }
@@ -192,8 +210,12 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
         if (blue) {
             this.blueWins++;
+            this.getGame().getBlueTeam().getUsers()
+                    .forEach(u -> u.addCoins(PushServer.LAP_COINS, true));
         } else {
             this.redWins++;
+            this.getGame().getRedTeam().getUsers()
+                    .forEach(u -> u.addCoins(PushServer.LAP_COINS, true));
         }
 
         this.updateBossBar(this.blueWins, this.redWins);
@@ -263,25 +285,31 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         Team blueTeam = this.getGame().getBlueTeam();
         Team redTeam = this.getGame().getRedTeam();
 
-        this.broadcastGameMessage(Component.text("Result:", ExTextColor.GOLD, TextDecoration.BOLD));
-        this.broadcastGameMessage(Chat.getLongLineSeparator());
-        this.broadcastGameMessage(Component.text("    " + this.blueWins + " ", ExTextColor.PUBLIC)
-                .append(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())));
-        this.broadcastGameMessage(Component.text("    " + this.redWins + " ", ExTextColor.PUBLIC)
-                .append(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())));
-        this.broadcastGameMessage(Chat.getLongLineSeparator());
+        this.broadcastGameTDMessage("§h§lResult:");
+        this.broadcastGameTDMessage(Chat.getLongLineTDSeparator());
+        this.broadcastGameTDMessage("    §p" + this.blueWins + " "
+                + blueTeam.getChatColor() + blueTeam.getDisplayName());
+        this.broadcastGameTDMessage("    " + this.redWins + " "
+                + redTeam.getChatColor() + redTeam.getDisplayName());
+        this.broadcastGameTDMessage(Chat.getLongLineTDSeparator());
+
+        int kills = blueTeam.getKills() + redTeam.getKills();
+
+        Server.getInGameUsers().forEach(u ->
+                u.addCoins((float) ((GameUser) u).getKills() / kills *
+                        PushServer.KILL_COINS_POOL, true));
 
         if (this.blueWins > this.redWins) {
-            Server.broadcastTitle(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())
-                            .append(Component.text(" wins", ExTextColor.WHITE)), Component.empty(),
-                    Duration.ofSeconds(5));
+            Server.broadcastTDTitle(blueTeam.getChatColor() + blueTeam.getDisplayName()
+                    + "§p wins", "", Duration.ofSeconds(5));
+            blueTeam.getUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS, true));
         } else if (this.redWins > this.blueWins) {
-            Server.broadcastTitle(Component.text(redTeam.getDisplayName(), redTeam.getTextColor())
-                            .append(Component.text(" wins", ExTextColor.WHITE)), Component.empty(),
-                    Duration.ofSeconds(5));
+            Server.broadcastTDTitle(redTeam.getChatColor() + redTeam.getDisplayName()
+                    + "§p wins", "", Duration.ofSeconds(5));
+            redTeam.getUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS, true));
         } else {
-            Server.broadcastTitle(Component.text("Draw", ExTextColor.WHITE), Component.empty(),
-                    Duration.ofSeconds(5));
+            Server.broadcastTDTitle("§pDraw", "", Duration.ofSeconds(5));
+            Server.getInGameUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS / 2, true));
         }
     }
 

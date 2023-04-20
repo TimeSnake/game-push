@@ -7,9 +7,14 @@ package de.timesnake.game.push.server;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServer;
 import de.timesnake.game.push.map.EscortManager;
 import de.timesnake.game.push.map.PushMap;
+import de.timesnake.library.basic.util.TimeCoins;
 import org.bukkit.boss.BossBar;
 
 public class PushServer extends LoungeBridgeServer {
+
+    public static final float KILL_COINS_POOL = 16 * TimeCoins.MULTIPLIER;
+    public static final float WIN_COINS = 10 * TimeCoins.MULTIPLIER;
+    public static final float LAP_COINS = 5 * TimeCoins.MULTIPLIER;
 
     private static final PushServerManager server = PushServerManager.getInstance();
 

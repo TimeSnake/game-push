@@ -71,7 +71,8 @@ public class PushUser extends GameUser {
         }
     }
 
-    public void respawn() {
+    @Override
+    public void onGameRespawn() {
         this.clearInventory();
         this.removePotionEffects();
         this.heal();
