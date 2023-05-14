@@ -61,7 +61,7 @@ public class PushMap extends Map implements ResetableMap {
         ExWorld world = this.getWorld();
         if (world != null) {
             world.restrict(Restriction.BLOCK_PLACE, true);
-            world.restrict(Restriction.FIRE_SPREAD, true);
+            world.restrict(Restriction.FIRE_SPREAD_SPEED, 0f);
             world.restrict(Restriction.BLOCK_BREAK, true);
             world.restrict(Restriction.ENTITY_BLOCK_BREAK, true);
             world.restrict(Restriction.ENTITY_EXPLODE, false);

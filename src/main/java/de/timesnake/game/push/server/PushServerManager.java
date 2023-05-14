@@ -135,10 +135,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         }
 
         this.sideboard.updateScore(LineId.MAP, this.getMap().getDisplayName());
-    }
 
-    @Override
-    public void onGamePrepare() {
         this.lap = 0;
         this.updateSideboardLap();
 
