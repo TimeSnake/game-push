@@ -13,14 +13,17 @@ import de.timesnake.game.push.user.PushUser;
 import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.bukkit.ExZombie;
-import de.timesnake.library.entities.pathfinder.custom.CustomPathfinderGoalUpdatedLocation;
-import de.timesnake.library.entities.pathfinder.custom.ExCustomPathfinderGoalUpdatedLocation;
-import de.timesnake.library.entities.wrapper.ExEnumItemSlot;
+import de.timesnake.library.entities.entity.MobBuilder;
+import de.timesnake.library.entities.pathfinder.UpdatedLocationGoal;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.Zombie;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitTask;
 
 public class EscortManager {
@@ -31,13 +34,13 @@ public class EscortManager {
   private static final double SPEED_INCREASE = 30;
   private static final int STOP_PLAYER_NUMBER = 2;
 
-  private ExZombie zombie;
+  private Zombie zombie;
   private PathPoint currentPathPoint;
   private boolean lastDirectionBlue;
 
   private BukkitTask moveTask;
 
-  private CustomPathfinderGoalUpdatedLocation pathfinder;
+  private UpdatedLocationGoal pathfinder;
 
   private int time;
   private double baseSpeed;
@@ -46,12 +49,12 @@ public class EscortManager {
 
   }
 
-  public ExZombie getZombie() {
+  public Zombie getZombie() {
     return zombie;
   }
 
   public void start() {
-    for (Zombie zombie : PushServer.getMap().getWorld().getEntitiesByClass(Zombie.class)) {
+    for (org.bukkit.entity.Zombie zombie : PushServer.getMap().getWorld().getEntitiesByClass(org.bukkit.entity.Zombie.class)) {
       zombie.remove();
     }
 
@@ -68,7 +71,7 @@ public class EscortManager {
     }
 
     if (this.zombie != null) {
-      this.zombie.remove();
+      this.zombie.remove(Entity.RemovalReason.DISCARDED);
     }
   }
 
@@ -78,38 +81,33 @@ public class EscortManager {
     this.currentPathPoint = map.getSpawnPoint();
 
     if (this.zombie != null) {
-      this.zombie.remove();
+      this.zombie.remove(Entity.RemovalReason.DISCARDED);
     }
 
-    this.zombie = new ExZombie(map.getWorld().getBukkitWorld(), false, false);
-
-    this.zombie.setInvulnerable(true);
-    this.zombie.setPersistent(true);
-    this.zombie.setRemoveWhenFarAway(false);
-
-    this.zombie.setCustomName("Zombie");
-    this.zombie.setCustomNameVisible(false);
-
-    this.zombie.setSlot(ExEnumItemSlot.HEAD,
-        new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true));
-
-    this.pathfinder = new CustomPathfinderGoalUpdatedLocation(null, this.baseSpeed, 32, 0.2) {
-      @Override
-      public Location getNextLocation(Location entityLoc) {
-        return EscortManager.this.currentPathPoint.getLocation();
-      }
-    };
-
-    this.zombie.addPathfinderGoal(1,
-        new ExCustomPathfinderGoalUpdatedLocation(this.pathfinder));
-
-    this.zombie.setCollidable(false);
-
-    this.zombie.setMaxHealth(2048);
-    this.zombie.setHealth(2048);
-
     ExLocation spawn = map.getZombieSpawn();
-    this.zombie.setPosition(spawn.getX(), spawn.getY(), spawn.getZ());
+
+    this.zombie = new MobBuilder<>(new Zombie(EntityType.ZOMBIE,
+        ((CraftWorld) map.getWorld().getBukkitWorld()).getHandle()))
+        .clearGoalTargets()
+        .clearPathfinderGoals()
+        .setMaxHealth(2048)
+        .applyOnEntity(e -> {
+          e.setInvulnerable(true);
+          e.setPersistenceRequired(true);
+          e.setCustomName(Component.literal("Zombie"));
+          e.setCustomNameVisible(false);
+          e.setItemSlot(EquipmentSlot.HEAD, new ExItemStack(Material.GOLDEN_HELMET).setUnbreakable(true).getHandle());
+          e.collides = false;
+          e.setHealth(2048);
+          e.setPos(spawn.getX(), spawn.getY(), spawn.getZ());
+        })
+        .addPathfinderGoal(1, e -> new UpdatedLocationGoal(e, this.baseSpeed, 32, 0.2) {
+          @Override
+          public Location getNextLocation(Location entityLoc) {
+            return EscortManager.this.currentPathPoint.getLocation();
+          }
+        })
+        .build();
 
     EntityManager.spawnEntity(map.getWorld().getBukkitWorld(), this.zombie);
 
@@ -121,7 +119,7 @@ public class EscortManager {
       int countBlue = 0;
       int countRed = 0;
 
-      for (Player player : this.zombie.getLocation().getNearbyPlayers(RADIUS)) {
+      for (Player player : this.zombie.getBukkitEntity().getLocation().getNearbyPlayers(RADIUS)) {
         PushUser user = (PushUser) Server.getUser(player);
         if (user.getTeam() == null || !user.getStatus().equals(Status.User.IN_GAME)) {
           continue;
@@ -156,7 +154,7 @@ public class EscortManager {
   }
 
   private void moveTo(boolean blue, double speed) {
-    double distance = this.zombie.getLocation()
+    double distance = this.zombie.getBukkitCreature().getLocation()
         .distance(this.currentPathPoint.getLocation().middleBlock());
 
     if (distance > 1.5 && this.lastDirectionBlue == blue) {
