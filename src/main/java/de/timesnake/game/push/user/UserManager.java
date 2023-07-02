@@ -11,7 +11,7 @@ import de.timesnake.basic.bukkit.util.user.event.UserDamageEvent;
 import de.timesnake.basic.bukkit.util.user.event.UserDropItemEvent;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.server.PushServer;
-import de.timesnake.library.entities.entity.bukkit.ExZombie;
+import net.minecraft.world.entity.monster.Zombie;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.TNTPrimed;
@@ -61,10 +61,10 @@ public class UserManager implements Listener {
 
   @EventHandler
   public void onPotionSplash(PotionSplashEvent e) {
-    ExZombie zombie = PushServer.getEscordManager().getZombie();
+    Zombie zombie = PushServer.getEscordManager().getZombie();
 
     if (zombie != null) {
-      Server.runTaskLaterSynchrony(() -> zombie.removePotionEffect(PotionEffectType.SPEED), 1,
+      Server.runTaskLaterSynchrony(() -> zombie.getBukkitCreature().removePotionEffect(PotionEffectType.SPEED), 1,
           GamePush.getPlugin());
     }
   }
