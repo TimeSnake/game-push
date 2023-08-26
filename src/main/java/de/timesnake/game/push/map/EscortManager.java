@@ -101,11 +101,14 @@ public class EscortManager {
           e.setHealth(2048);
           e.setPos(spawn.getX(), spawn.getY(), spawn.getZ());
         })
-        .addPathfinderGoal(1, e -> new UpdatedLocationGoal(e, this.baseSpeed, 32, 0.2) {
-          @Override
-          public Location getNextLocation(Location entityLoc) {
-            return EscortManager.this.currentPathPoint.getLocation();
-          }
+        .addPathfinderGoal(1, e -> {
+          this.pathfinder = new UpdatedLocationGoal(e, this.baseSpeed, 32, 0.2) {
+            @Override
+            public Location getNextLocation(Location entityLoc) {
+              return EscortManager.this.currentPathPoint.getLocation();
+            }
+          };
+          return this.pathfinder;
         })
         .build();
 
