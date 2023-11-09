@@ -158,7 +158,7 @@ public class EscortManager {
 
   private void moveTo(boolean blue, double speed) {
     double distance = this.zombie.getBukkitCreature().getLocation()
-        .distance(this.currentPathPoint.getLocation().middleBlock());
+        .distance(this.currentPathPoint.getLocation().middleHorizontalBlock());
 
     if (distance > 1.5 && this.lastDirectionBlue == blue) {
       return;
@@ -169,7 +169,7 @@ public class EscortManager {
     PathPoint next = this.currentPathPoint;
 
     while (next != null
-        && next.getLocation().distance(this.currentPathPoint.getLocation().middleBlock())
+        && next.getLocation().distance(this.currentPathPoint.getLocation().middleHorizontalBlock())
         <= 2.1) {
       if (blue) {
         next = next.getNextToBlue();
