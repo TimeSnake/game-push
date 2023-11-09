@@ -11,13 +11,14 @@ import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
 import de.timesnake.library.basic.util.Loggers;
+import org.bukkit.GameRule;
+import org.bukkit.Material;
+import org.bukkit.util.Vector;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import org.bukkit.GameRule;
-import org.bukkit.Material;
-import org.bukkit.util.Vector;
 
 public class PushMap extends Map implements ResetableMap {
 
@@ -109,7 +110,7 @@ public class PushMap extends Map implements ResetableMap {
       return;
     }
 
-    this.spawnPoint = new PathPoint(this.getZombieSpawn().clone().middleBlock());
+    this.spawnPoint = new PathPoint(this.getZombieSpawn().clone().middleHorizontalBlock());
 
     for (int i = 0; i < 10; i++) {
       int blueIndex = BLUE_SPAWN + i;
@@ -131,7 +132,7 @@ public class PushMap extends Map implements ResetableMap {
 
     for (List<Vector> vecs : List.of(STRAIGHT, DIAGONAL, TETRAGONAL)) {
       for (Vector vec : vecs) {
-        ExLocation nearLoc = this.spawnPoint.getLocation().clone().add(vec).middleBlock();
+        ExLocation nearLoc = this.spawnPoint.getLocation().clone().add(vec).middleHorizontalBlock();
         Material type = nearLoc.clone().add(0, -1, 0).getBlock().getType();
 
         if (type.equals(Material.BLUE_WOOL)) {
@@ -160,7 +161,7 @@ public class PushMap extends Map implements ResetableMap {
     ExLocation current = getNextLocation(firstToBlue.getLocation());
 
     while (current != null) {
-      previous = previous.setNextToBlue(new PathPoint(current.middleBlock()));
+      previous = previous.setNextToBlue(new PathPoint(current.middleHorizontalBlock()));
 
       current = getNextLocation(current);
     }
@@ -170,7 +171,7 @@ public class PushMap extends Map implements ResetableMap {
     current = getNextLocation(firstToRed.getLocation());
 
     while (current != null) {
-      previous = previous.setNextToRed(new PathPoint(current.middleBlock()));
+      previous = previous.setNextToRed(new PathPoint(current.middleHorizontalBlock()));
 
       current = getNextLocation(current);
     }
@@ -183,7 +184,7 @@ public class PushMap extends Map implements ResetableMap {
   private ExLocation getNextLocation(ExLocation current) {
     for (List<Vector> vecs : List.of(STRAIGHT, DIAGONAL, TETRAGONAL)) {
       for (Vector vec : vecs) {
-        ExLocation nearLoc = current.clone().add(vec).middleBlock();
+        ExLocation nearLoc = current.clone().add(vec).middleHorizontalBlock();
         if (!this.spawnPoint.contains(nearLoc) && this.villagerPathMaterials.contains(
             nearLoc.clone().add(0,
                 -1, 0).getBlock().getType())) {
