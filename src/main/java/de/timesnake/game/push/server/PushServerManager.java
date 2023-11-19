@@ -282,6 +282,9 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     Team blueTeam = this.getGame().getBlueTeam();
     Team redTeam = this.getGame().getRedTeam();
 
+    this.broadcastGameMessage(Chat.getLongLineSeparator());
+    Server.broadcastSound(PushServer.END_SOUND, 5F);
+
     this.broadcastGameTDMessage("§h§lResult:");
     this.broadcastGameTDMessage(Chat.getLongLineTDSeparator());
     this.broadcastGameTDMessage("    §p" + this.blueWins + " "
@@ -308,6 +311,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
       Server.broadcastTDTitle("§pDraw", "", Duration.ofSeconds(5));
       Server.getInGameUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS / 2, true));
     }
+
+    this.broadcastGameMessage(Chat.getLongLineSeparator());
   }
 
   public void updateSideboardLap() {
