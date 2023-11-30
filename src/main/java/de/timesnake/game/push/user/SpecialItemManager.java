@@ -10,13 +10,14 @@ import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractEvent;
 import de.timesnake.basic.bukkit.util.user.inventory.UserInventoryInteractListener;
 import de.timesnake.game.push.main.GamePush;
+import org.bukkit.Material;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.potion.PotionEffectType;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.bukkit.Material;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.potion.PotionEffectType;
 
 public class SpecialItemManager implements UserInventoryInteractListener {
 
@@ -37,32 +38,24 @@ public class SpecialItemManager implements UserInventoryInteractListener {
       user.addPotionEffect(PotionEffectType.SLOW, 15 * 20, 3);
       user.addPotionEffect(PotionEffectType.BLINDNESS, 13 * 20, 1);
 
-      user.setItem(EquipmentSlot.HEAD,
-          new ExItemStack(Material.NETHERITE_HELMET).setUnbreakable(true).setMoveable(false)
-              .setDropable(false));
-      user.setItem(EquipmentSlot.CHEST,
-          new ExItemStack(Material.NETHERITE_CHESTPLATE).setUnbreakable(true).setMoveable(false)
-              .setDropable(false));
-      user.setItem(EquipmentSlot.LEGS,
-          new ExItemStack(Material.NETHERITE_LEGGINGS).setUnbreakable(true).setMoveable(false)
-              .setDropable(false));
-      user.setItem(EquipmentSlot.FEET,
-          new ExItemStack(Material.NETHERITE_BOOTS).setUnbreakable(true).setMoveable(false)
-              .setDropable(false));
+      user.setItem(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET)
+          .setUnbreakable(true).setMoveable(false).setDropable(false));
+      user.setItem(EquipmentSlot.CHEST, new ExItemStack(Material.NETHERITE_CHESTPLATE)
+          .setUnbreakable(true).setMoveable(false).setDropable(false));
+      user.setItem(EquipmentSlot.LEGS, new ExItemStack(Material.NETHERITE_LEGGINGS)
+          .setUnbreakable(true).setMoveable(false).setDropable(false));
+      user.setItem(EquipmentSlot.FEET, new ExItemStack(Material.NETHERITE_BOOTS)
+          .setUnbreakable(true).setMoveable(false).setDropable(false));
 
       Server.runTaskLaterSynchrony(() -> {
-        user.setItem(EquipmentSlot.HEAD,
-            new ExItemStack(Material.DIAMOND_HELMET).setUnbreakable(true).setMoveable(false)
-                .setDropable(false));
-        user.setItem(EquipmentSlot.CHEST,
-            new ExItemStack(Material.DIAMOND_CHESTPLATE).setUnbreakable(true).setMoveable(false)
-                .setDropable(false));
-        user.setItem(EquipmentSlot.LEGS,
-            new ExItemStack(Material.DIAMOND_LEGGINGS).setUnbreakable(true).setMoveable(false)
-                .setDropable(false));
-        user.setItem(EquipmentSlot.FEET,
-            new ExItemStack(Material.DIAMOND_BOOTS).setUnbreakable(true).setMoveable(false)
-                .setDropable(false));
+        user.setItem(EquipmentSlot.HEAD, new ExItemStack(Material.DIAMOND_HELMET)
+            .setUnbreakable(true).setMoveable(false).setDropable(false));
+        user.setItem(EquipmentSlot.CHEST, new ExItemStack(Material.DIAMOND_CHESTPLATE)
+            .setUnbreakable(true).setMoveable(false).setDropable(false));
+        user.setItem(EquipmentSlot.LEGS, new ExItemStack(Material.DIAMOND_LEGGINGS)
+            .setUnbreakable(true).setMoveable(false).setDropable(false));
+        user.setItem(EquipmentSlot.FEET, new ExItemStack(Material.DIAMOND_BOOTS)
+            .setUnbreakable(true).setMoveable(false).setDropable(false));
       }, 15 * 20, GamePush.getPlugin());
     }
   };

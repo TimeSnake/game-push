@@ -12,6 +12,7 @@ import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboardBuilder;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Team;
+import de.timesnake.basic.loungebridge.util.server.EndMessage;
 import de.timesnake.basic.loungebridge.util.server.LoungeBridgeServerManager;
 import de.timesnake.basic.loungebridge.util.tool.listener.GameUserDeathListener;
 import de.timesnake.basic.loungebridge.util.tool.listener.GameUserRespawnListener;
@@ -28,7 +29,6 @@ import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
 import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.extension.util.chat.Chat;
-import java.time.Duration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -40,6 +40,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
 
 public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
@@ -252,7 +254,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         } else {
           user.teleport(PushServer.getMap().getRandomRedSpawn());
         }
-        user.lockLocation(true);
+        user.lockLocation();
         user.setGravity(false);
         user.setInvulnerable(true);
         ((PushUser) user).respawn();
@@ -282,37 +284,28 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     Team blueTeam = this.getGame().getBlueTeam();
     Team redTeam = this.getGame().getRedTeam();
 
-    this.broadcastGameMessage(Chat.getLongLineSeparator());
-    Server.broadcastSound(PushServer.END_SOUND, 5F);
+    Team winnerTeam;
 
-    this.broadcastGameTDMessage("§h§lResult:");
-    this.broadcastGameTDMessage(Chat.getLongLineTDSeparator());
-    this.broadcastGameTDMessage("    §p" + this.blueWins + " "
-        + blueTeam.getChatColor() + blueTeam.getDisplayName());
-    this.broadcastGameTDMessage("    " + this.redWins + " "
-        + redTeam.getChatColor() + redTeam.getDisplayName());
-    this.broadcastGameTDMessage(Chat.getLongLineTDSeparator());
+    if (this.blueWins > this.redWins) {
+      winnerTeam = blueTeam;
+    } else if (this.redWins > this.blueWins) {
+      winnerTeam = redTeam;
+    } else {
+      winnerTeam = null;
+    }
+
+    new EndMessage()
+        .winner(winnerTeam)
+        .addExtra("§h§lResult:")
+        .addExtraLineSeparator()
+        .addExtra("    §p" + this.blueWins + " " + blueTeam.getChatColor() + blueTeam.getDisplayName())
+        .addExtra("    " + this.redWins + " " + redTeam.getChatColor() + redTeam.getDisplayName())
+        .send();
 
     int kills = blueTeam.getKills() + redTeam.getKills();
 
     Server.getInGameUsers().forEach(u ->
-        u.addCoins((float) ((GameUser) u).getKills() / kills *
-            PushServer.KILL_COINS_POOL, true));
-
-    if (this.blueWins > this.redWins) {
-      Server.broadcastTDTitle(blueTeam.getChatColor() + blueTeam.getDisplayName()
-          + "§p wins", "", Duration.ofSeconds(5));
-      blueTeam.getUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS, true));
-    } else if (this.redWins > this.blueWins) {
-      Server.broadcastTDTitle(redTeam.getChatColor() + redTeam.getDisplayName()
-          + "§p wins", "", Duration.ofSeconds(5));
-      redTeam.getUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS, true));
-    } else {
-      Server.broadcastTDTitle("§pDraw", "", Duration.ofSeconds(5));
-      Server.getInGameUsers().forEach(u -> u.addCoins(PushServer.WIN_COINS / 2, true));
-    }
-
-    this.broadcastGameMessage(Chat.getLongLineSeparator());
+        u.addCoins((float) ((GameUser) u).getKills() / kills * PushServer.KILL_COINS_POOL, true));
   }
 
   public void updateSideboardLap() {
@@ -323,8 +316,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     Team blue = this.getGame().getBlueTeam();
     Team red = this.getGame().getRedTeam();
 
-    this.bossBar.setTitle(
-        blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
+    this.bossBar.setTitle(blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
             "§6" + redWins + "§f - " + red.getChatColor() + red.getDisplayName());
 
     if (blueWins > redWins) {
@@ -345,13 +337,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
   }
 
   @Override
-  public void onGameUserQuit(GameUser user) {
-
-  }
-
-  @Override
-  public void onGameUserQuitBeforeStart(GameUser user) {
-
+  public boolean checkGameEnd() {
+    return this.getGame().getBlueTeam().isEmpty() || this.getGame().getRedTeam().isEmpty();
   }
 
   @Override

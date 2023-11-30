@@ -54,8 +54,7 @@ public class UserManager implements Listener {
 
     if (material.equals(Material.GLASS_BOTTLE)) {
       e.setCancelled(true);
-      Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1,
-          GamePush.getPlugin());
+      Server.runTaskLaterSynchrony(() -> e.getUser().getInventory().remove(material), 1, GamePush.getPlugin());
     }
   }
 
@@ -64,8 +63,8 @@ public class UserManager implements Listener {
     Zombie zombie = PushServer.getEscordManager().getZombie();
 
     if (zombie != null) {
-      Server.runTaskLaterSynchrony(() -> zombie.getBukkitCreature().removePotionEffect(PotionEffectType.SPEED), 1,
-          GamePush.getPlugin());
+      Server.runTaskLaterSynchrony(() -> zombie.getBukkitCreature().removePotionEffect(PotionEffectType.SPEED),
+          1, GamePush.getPlugin());
     }
   }
 
@@ -73,8 +72,7 @@ public class UserManager implements Listener {
   public void onUserDamage(UserDamageEvent e) {
     User user = e.getUser();
 
-    if (((PushUser) user).getKit() == null || !((PushUser) user).getKit()
-        .equals(PushKitManager.BARBAR)) {
+    if (((PushUser) user).getKit() == null || !((PushUser) user).getKit().equals(PushKitManager.BARBAR)) {
       return;
     }
 

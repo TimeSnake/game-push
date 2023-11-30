@@ -5,13 +5,15 @@
 package de.timesnake.game.push.user;
 
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
+import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.game.push.server.PushServer;
-import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.util.List;
 
 public class PushUser extends GameUser {
 
@@ -72,7 +74,7 @@ public class PushUser extends GameUser {
   }
 
   @Override
-  public void onGameRespawn() {
+  public ExLocation onGameRespawn() {
     this.clearInventory();
     this.removePotionEffects();
     this.heal();
@@ -80,5 +82,7 @@ public class PushUser extends GameUser {
 
     this.kitLoaded = false;
     this.setItems();
+
+    return null;
   }
 }
