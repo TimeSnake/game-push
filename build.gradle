@@ -4,7 +4,7 @@ plugins {
 }
 
 group = project.group
-version = '1.2'
+version = '1.2.1'
 archivesBaseName = 'game-push'
 var projectId = 21
 
