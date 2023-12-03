@@ -74,7 +74,7 @@ public class PushUser extends GameUser {
   }
 
   @Override
-  public ExLocation onGameRespawn() {
+  public ExLocation getRespawnLocation() {
     this.clearInventory();
     this.removePotionEffects();
     this.heal();
