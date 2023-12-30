@@ -13,16 +13,14 @@ import de.timesnake.game.push.user.PushUser;
 import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.entities.EntityManager;
-import de.timesnake.library.entities.entity.MobBuilder;
+import de.timesnake.library.entities.entity.ZombieBuilder;
 import de.timesnake.library.entities.pathfinder.UpdatedLocationGoal;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Zombie;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_20_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -86,8 +84,7 @@ public class EscortManager {
 
     ExLocation spawn = map.getZombieSpawn();
 
-    this.zombie = new MobBuilder<>(new Zombie(EntityType.ZOMBIE,
-        ((CraftWorld) map.getWorld().getBukkitWorld()).getHandle()))
+    this.zombie = new ZombieBuilder()
         .clearGoalTargets()
         .clearPathfinderGoals()
         .setMaxHealth(2048)
@@ -110,7 +107,7 @@ public class EscortManager {
           };
           return this.pathfinder;
         })
-        .build();
+        .build(map.getWorld().getHandle());
 
     EntityManager.spawnEntity(map.getWorld().getBukkitWorld(), this.zombie);
 
