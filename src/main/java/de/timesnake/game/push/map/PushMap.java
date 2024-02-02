@@ -32,20 +32,14 @@ public class PushMap extends Map implements ResetableMap {
   // x[1-10] -> team spawns
 
   private static final List<Vector> STRAIGHT = List.of(new Vector(-1, 0, 0), new Vector(1, 0, 0),
-      new Vector(0, 0,
-          -1), new Vector(0, 0, 1));
+      new Vector(0, 0, -1), new Vector(0, 0, 1));
   private static final List<Vector> DIAGONAL = List.of(new Vector(-1, 0, -1),
-      new Vector(-1, 0, 1), new Vector(1, 0
-          , -1), new Vector(1, 0, 1), new Vector(-1, -1, 0), new Vector(-1, 1, 0),
-      new Vector(1, -1, 0),
-      new Vector(1, 1, 0), new Vector(0, -1, -1), new Vector(0, -1, 1), new Vector(0, 1, -1),
-      new Vector(0, 1,
-          1));
+      new Vector(-1, 0, 1), new Vector(1, 0, -1), new Vector(1, 0, 1), new Vector(-1, -1, 0),
+      new Vector(-1, 1, 0), new Vector(1, -1, 0), new Vector(1, 1, 0), new Vector(0, -1, -1),
+      new Vector(0, -1, 1), new Vector(0, 1, -1), new Vector(0, 1, 1));
   private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1),
-      new Vector(-1, -1, 1),
-      new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1),
-      new Vector(1, -1, 1), new Vector(1, 1
-          , -1), new Vector(1, 1, 1));
+      new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1),
+      new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1));
 
   private final List<Material> villagerPathMaterials = new LinkedList<>();
   private final int laps;
@@ -84,24 +78,23 @@ public class PushMap extends Map implements ResetableMap {
       world.setPVP(true);
     }
 
-    this.laps = Integer.parseInt(super.getInfo().get(0));
+    this.laps = this.getProperty("laps", Integer.class, 3,
+        v -> Loggers.GAME.warning("Can not load laps of map " + super.name + ", laps is not an integer"));
 
-    String[] materialNames = super.getInfo().get(1).split(",");
+    String[] materialNames = super.getProperty("materials").split(",");
 
     for (String materialName : materialNames) {
       Material material = Material.getMaterial(materialName.toUpperCase());
 
       if (material == null) {
-        Loggers.GAME.warning(
-            "Unknown material for map " + this.getName() + ": " + materialName);
+        Loggers.GAME.warning("Unknown material for map " + this.getName() + ": " + materialName);
       } else {
         this.villagerPathMaterials.add(material);
       }
     }
 
     if (this.villagerPathMaterials.isEmpty()) {
-      Loggers.GAME.warning(
-          "Unknown material for map " + this.getName() + ": " + super.getInfo().get(0));
+      Loggers.GAME.warning("Unknown material for map " + this.getName() + ": " + String.join(", ", materialNames));
       this.villagerPathMaterials.add(Material.BEDROCK);
     }
 
@@ -144,9 +137,7 @@ public class PushMap extends Map implements ResetableMap {
     }
 
     if (firstToBlue == null || firstToRed == null) {
-      Loggers.GAME.warning(
-          "No directions to blue/red found " + this.getName() + ": " + super.getInfo()
-              .get(0));
+      Loggers.GAME.warning("No directions to blue/red found " + this.getName());
       firstToBlue = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
       this.spawnPoint.setNextToBlue(firstToBlue);
       firstToRed = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
@@ -162,17 +153,14 @@ public class PushMap extends Map implements ResetableMap {
 
     while (current != null) {
       previous = previous.setNextToBlue(new PathPoint(current.middleHorizontalBlock()));
-
       current = getNextLocation(current);
     }
 
     previous = firstToRed;
-
     current = getNextLocation(firstToRed.getLocation());
 
     while (current != null) {
       previous = previous.setNextToRed(new PathPoint(current.middleHorizontalBlock()));
-
       current = getNextLocation(current);
     }
 
@@ -186,8 +174,7 @@ public class PushMap extends Map implements ResetableMap {
       for (Vector vec : vecs) {
         ExLocation nearLoc = current.clone().add(vec).middleHorizontalBlock();
         if (!this.spawnPoint.contains(nearLoc) && this.villagerPathMaterials.contains(
-            nearLoc.clone().add(0,
-                -1, 0).getBlock().getType())) {
+            nearLoc.clone().add(0, -1, 0).getBlock().getType())) {
           return nearLoc;
         }
       }
@@ -212,8 +199,7 @@ public class PushMap extends Map implements ResetableMap {
   }
 
   public ExLocation getRandomBlueSpawn() {
-    return super.getLocation(
-        this.blueSpawnIndizes.get(new Random().nextInt(this.blueSpawnIndizes.size())));
+    return super.getLocation(this.blueSpawnIndizes.get(new Random().nextInt(this.blueSpawnIndizes.size())));
   }
 
   public Collection<ExLocation> getBlueSpawns() {
@@ -221,8 +207,7 @@ public class PushMap extends Map implements ResetableMap {
   }
 
   public ExLocation getRandomRedSpawn() {
-    return super.getLocation(
-        this.redSpawnIndizes.get(new Random().nextInt(this.redSpawnIndizes.size())));
+    return super.getLocation(this.redSpawnIndizes.get(new Random().nextInt(this.redSpawnIndizes.size())));
   }
 
   public Collection<ExLocation> getRedSpawns() {
