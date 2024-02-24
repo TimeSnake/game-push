@@ -10,7 +10,8 @@ import de.timesnake.basic.bukkit.util.world.ExWorld.Restriction;
 import de.timesnake.basic.game.util.game.Map;
 import de.timesnake.basic.loungebridge.util.game.ResetableMap;
 import de.timesnake.database.util.game.DbMap;
-import de.timesnake.library.basic.util.Loggers;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -40,6 +41,8 @@ public class PushMap extends Map implements ResetableMap {
   private static final List<Vector> TETRAGONAL = List.of(new Vector(-1, -1, -1),
       new Vector(-1, -1, 1), new Vector(-1, 1, -1), new Vector(-1, 1, 1), new Vector(1, -1, -1),
       new Vector(1, -1, 1), new Vector(1, 1, -1), new Vector(1, 1, 1));
+
+  private final Logger logger = LogManager.getLogger("push.map");
 
   private final List<Material> villagerPathMaterials = new LinkedList<>();
   private final int laps;
@@ -79,7 +82,7 @@ public class PushMap extends Map implements ResetableMap {
     }
 
     this.laps = this.getProperty("laps", Integer.class, 3,
-        v -> Loggers.GAME.warning("Can not load laps of map " + super.name + ", laps is not an integer"));
+        v -> this.logger.warn("Can not load laps of map '{}', laps is not an integer", super.name));
 
     String[] materialNames = super.getProperty("materials").split(",");
 
@@ -87,19 +90,19 @@ public class PushMap extends Map implements ResetableMap {
       Material material = Material.getMaterial(materialName.toUpperCase());
 
       if (material == null) {
-        Loggers.GAME.warning("Unknown material for map " + this.getName() + ": " + materialName);
+        this.logger.warn("Unknown material for map '{}': {}", this.getName(), materialName);
       } else {
         this.villagerPathMaterials.add(material);
       }
     }
 
     if (this.villagerPathMaterials.isEmpty()) {
-      Loggers.GAME.warning("Unknown material for map " + this.getName() + ": " + String.join(", ", materialNames));
+      this.logger.warn("Unknown material for map '{}':{} ", this.getName(), String.join(", ", materialNames));
       this.villagerPathMaterials.add(Material.BEDROCK);
     }
 
     if (this.getZombieSpawn() == null) {
-      Loggers.GAME.warning("Missing zombie location in map " + this.getName());
+      this.logger.warn("Missing zombie location in map '{}'", this.getName());
       return;
     }
 
@@ -137,7 +140,7 @@ public class PushMap extends Map implements ResetableMap {
     }
 
     if (firstToBlue == null || firstToRed == null) {
-      Loggers.GAME.warning("No directions to blue/red found " + this.getName());
+      this.logger.warn("No directions to blue/red found {}", this.getName());
       firstToBlue = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
       this.spawnPoint.setNextToBlue(firstToBlue);
       firstToRed = new PathPoint(this.getNextLocation(this.spawnPoint.getLocation()));
