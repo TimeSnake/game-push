@@ -27,8 +27,8 @@ import de.timesnake.game.push.map.PushMap;
 import de.timesnake.game.push.user.PushUser;
 import de.timesnake.game.push.user.SpecialItemManager;
 import de.timesnake.game.push.user.UserManager;
-import de.timesnake.library.chat.ExTextColor;
 import de.timesnake.library.chat.Chat;
+import de.timesnake.library.chat.ExTextColor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
@@ -238,8 +238,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
           Duration.ofSeconds(3));
     }
 
-    this.broadcastGameMessage(
-        Component.text("Scores: ", ExTextColor.GOLD, TextDecoration.BOLD));
+    this.broadcastGameMessage(Component.text("Scores: ", ExTextColor.GOLD, TextDecoration.BOLD));
     this.broadcastGameMessage(Chat.getLongLineSeparator());
     this.broadcastGameMessage(Component.text("    " + this.blueWins + " ", ExTextColor.PUBLIC)
         .append(Component.text(blueTeam.getDisplayName(), blueTeam.getTextColor())));
@@ -298,8 +297,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
         .winner(winnerTeam)
         .addExtra("§h§lResult:")
         .addExtraLineSeparator()
-        .addExtra("    §p" + this.blueWins + " " + blueTeam.getChatColor() + blueTeam.getDisplayName())
-        .addExtra("    " + this.redWins + " " + redTeam.getChatColor() + redTeam.getDisplayName())
+        .addExtra("    §p" + this.blueWins + " " + blueTeam.getTDColor() + blueTeam.getDisplayName())
+        .addExtra("    " + this.redWins + " " + redTeam.getTDColor() + redTeam.getDisplayName())
         .send();
 
     int kills = blueTeam.getKills() + redTeam.getKills();
@@ -316,8 +315,8 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
     Team blue = this.getGame().getBlueTeam();
     Team red = this.getGame().getRedTeam();
 
-    this.bossBar.setTitle(blue.getChatColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
-            "§6" + redWins + "§f - " + red.getChatColor() + red.getDisplayName());
+    this.bossBar.setTitle(blue.getTDColor() + blue.getDisplayName() + "§f - §6" + blueWins + "§f | " +
+        "§6" + redWins + "§f - " + red.getTDColor() + red.getDisplayName());
 
     if (blueWins > redWins) {
       this.bossBar.setColor(BarColor.BLUE);
