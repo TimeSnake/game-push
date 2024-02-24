@@ -10,7 +10,6 @@ import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.game.push.main.GamePush;
 import de.timesnake.game.push.server.PushServer;
 import de.timesnake.game.push.user.PushUser;
-import de.timesnake.library.basic.util.Loggers;
 import de.timesnake.library.basic.util.Status;
 import de.timesnake.library.entities.EntityManager;
 import de.timesnake.library.entities.entity.ZombieBuilder;
@@ -19,6 +18,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.Zombie;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,6 +32,8 @@ public class EscortManager {
   private static final double MAX_SPEED = 1.7;
   private static final double SPEED_INCREASE = 30;
   private static final int STOP_PLAYER_NUMBER = 2;
+
+  private final Logger logger = LogManager.getLogger("push.escort");
 
   private Zombie zombie;
   private PathPoint currentPathPoint;
@@ -111,7 +114,7 @@ public class EscortManager {
 
     EntityManager.spawnEntity(map.getWorld().getBukkitWorld(), this.zombie);
 
-    Loggers.GAME.info("Spawned zombie");
+    this.logger.info("Spawned zombie");
   }
 
   public void runMoveTask() {

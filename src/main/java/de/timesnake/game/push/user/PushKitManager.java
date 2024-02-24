@@ -7,16 +7,16 @@ package de.timesnake.game.push.user;
 import de.timesnake.basic.bukkit.util.user.inventory.ExItemStack;
 import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.basic.loungebridge.util.user.Kit;
-import de.timesnake.basic.loungebridge.util.user.Kit.Builder;
 import de.timesnake.basic.loungebridge.util.user.KitManager;
 import de.timesnake.game.push.server.PushServer;
-import java.util.Collection;
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+
+import java.util.Collection;
+import java.util.List;
 
 public class PushKitManager extends KitManager<Kit> {
 
@@ -146,4 +146,8 @@ public class PushKitManager extends KitManager<Kit> {
                     FOOD.cloneWithId().asQuantity(16).setSlot(8)));
 
      */
+
+  public static class Builder extends Kit.Builder<Builder> {
+
+  }
 }
