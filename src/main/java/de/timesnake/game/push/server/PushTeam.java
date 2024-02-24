@@ -4,7 +4,6 @@
 
 package de.timesnake.game.push.server;
 
-import de.timesnake.basic.bukkit.util.exception.UnsupportedGroupRankException;
 import de.timesnake.basic.game.util.game.Team;
 import de.timesnake.database.util.game.DbTeam;
 
@@ -12,7 +11,7 @@ public class PushTeam extends Team {
 
   private PushTeam opposite;
 
-  public PushTeam(DbTeam team) throws UnsupportedGroupRankException {
+  public PushTeam(DbTeam team) {
     super(team);
   }
 

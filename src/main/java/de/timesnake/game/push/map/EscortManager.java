@@ -168,9 +168,7 @@ public class EscortManager {
 
     PathPoint next = this.currentPathPoint;
 
-    while (next != null
-        && next.getLocation().distance(this.currentPathPoint.getLocation().middleHorizontalBlock())
-        <= 2.1) {
+    while (next != null && next.getLocation().distance(this.currentPathPoint.getLocation().middleHorizontalBlock()) <= 2.1) {
       if (blue) {
         next = next.getNextToBlue();
       } else {
