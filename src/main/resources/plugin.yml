@@ -1,5 +1,5 @@
 main: de.timesnake.game.push.main.GamePush
-version: 1.3.0
+version: 1.4.0
 name: game-push
 author: timesnake
 depend: [ basic-lounge-bridge ]
