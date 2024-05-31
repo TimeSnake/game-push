@@ -39,7 +39,7 @@ public class PushKitManager extends KitManager<Kit> {
               .setUnbreakable(true).setDropable(false),
           new ExItemStack(Material.STONE_SWORD).setSlot(0)
               .setUnbreakable(true).setDropable(false),
-          ExItemStack.getPotion(Material.POTION, PotionType.INSTANT_HEAL, false, true)
+          ExItemStack.getPotion(Material.POTION, PotionType.HEALING, false, true)
               .asQuantity(3).setSlot(1).setDropable(false),
           FOOD.cloneWithId().asQuantity(8).setSlot(8))
       .build();
@@ -54,17 +54,17 @@ public class PushKitManager extends KitManager<Kit> {
               .setUnbreakable(true).setDropable(false),
           new ExItemStack(Material.GOLDEN_CHESTPLATE).setSlot(EquipmentSlot.CHEST)
               .setUnbreakable(true)
-              .addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 2)
+              .addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 2)
               .setDropable(false),
           new ExItemStack(Material.GOLDEN_LEGGINGS).setSlot(EquipmentSlot.LEGS)
               .setUnbreakable(true).setDropable(false),
           new ExItemStack(Material.LEATHER_BOOTS).setSlot(EquipmentSlot.FEET)
-              .setUnbreakable(true).addExEnchantment(Enchantment.PROTECTION_FALL, 3)
+              .setUnbreakable(true).addExEnchantment(Enchantment.FEATHER_FALLING, 3)
               .setDropable(false),
           new ExItemStack(0, Material.WOODEN_SWORD).setUnbreakable(true)
               .addExEnchantment(Enchantment.KNOCKBACK, 1).setDropable(false),
           new ExItemStack(1, Material.BOW).setUnbreakable(true).setDropable(false)
-              .addExEnchantment(Enchantment.ARROW_DAMAGE, 1),
+              .addExEnchantment(Enchantment.POWER, 1),
           ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 1, "§6Poison",
               PotionEffectType.POISON, 10 * 20, 2).setSlot(2),
           new ExItemStack(6, Material.ARROW).asQuantity(64),
@@ -79,18 +79,18 @@ public class PushKitManager extends KitManager<Kit> {
       .addDescription("§7Golden Sword", "§7Golden Armor", "", "§7Speed Potion")
       .addItems(new ExItemStack(Material.TURTLE_HELMET).setSlot(EquipmentSlot.HEAD)
               .setUnbreakable(true).setDropable(false)
-              .addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
+              .addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
           new ExItemStack(Material.GOLDEN_CHESTPLATE).setSlot(EquipmentSlot.CHEST)
               .setUnbreakable(true).setDropable(false)
-              .addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
+              .addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
           new ExItemStack(Material.LEATHER_LEGGINGS).setSlot(EquipmentSlot.LEGS)
               .setUnbreakable(true).setDropable(false)
-              .addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
+              .addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
           new ExItemStack(Material.GOLDEN_BOOTS).setSlot(EquipmentSlot.FEET)
               .setUnbreakable(true).setDropable(false)
               .addExEnchantment(Enchantment.DEPTH_STRIDER, 4),
           new ExItemStack(0, Material.GOLDEN_SWORD).addExEnchantment(
-              Enchantment.DAMAGE_ALL, 5).setUnbreakable(true).setDropable(false),
+              Enchantment.SHARPNESS, 5).setUnbreakable(true).setDropable(false),
           ExItemStack.getPotion(ExItemStack.PotionMaterial.DRINK, 1, "§6Speed (30s)",
               PotionEffectType.SPEED, 30 * 20, 1).setSlot(1).setDropable(false),
           ExItemStack.getPotion(ExItemStack.PotionMaterial.SPLASH, 2, "§6Speed (15s)",
@@ -123,13 +123,18 @@ public class PushKitManager extends KitManager<Kit> {
     /*
     public static final PushKit THIEF = new PushKit(4, "Thief", Material.LEATHER,
             List.of("§7Iron Sword", "§7Leather Armor", "", "§7Jump Boost, Invisibility"),
-            List.of(new ExItemStack(Material.LEATHER_HELMET, Color.BLACK).setSlot(EquipmentSlot.HEAD).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
-                    new ExItemStack(Material.LEATHER_CHESTPLATE, Color.BLACK).setSlot(EquipmentSlot.CHEST).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
-                    new ExItemStack(Material.LEATHER_LEGGINGS, Color.BLACK).setSlot(EquipmentSlot.LEGS).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_PROJECTILE, 1),
-                    new ExItemStack(Material.LEATHER_BOOTS, Color.BLACK).setSlot(EquipmentSlot.FEET).setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROTECTION_FALL, 4),
+            List.of(new ExItemStack(Material.LEATHER_HELMET, Color.BLACK).setSlot(EquipmentSlot.HEAD).setUnbreakable
+            (true).setDropable(false).addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
+                    new ExItemStack(Material.LEATHER_CHESTPLATE, Color.BLACK).setSlot(EquipmentSlot.CHEST)
+                    .setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
+                    new ExItemStack(Material.LEATHER_LEGGINGS, Color.BLACK).setSlot(EquipmentSlot.LEGS)
+                    .setUnbreakable(true).setDropable(false).addExEnchantment(Enchantment.PROJECTILE_PROTECTION, 1),
+                    new ExItemStack(Material.LEATHER_BOOTS, Color.BLACK).setSlot(EquipmentSlot.FEET).setUnbreakable
+                    (true).setDropable(false).addExEnchantment(Enchantment.FEATHER_FALLING, 4),
                     new ExItemStack(0, Material.IRON_SWORD).setUnbreakable(true).setDropable(false),
                     SpecialItemManager.JUMP_BOOST.getItem().cloneWithId().setSlot(1).enchant(),
-                    new ExItemStack(false, "§6Invisibility (7s)", PotionEffectType.INVISIBILITY, 7 * 20, 1, 1).setSlot(2).setDropable(false),
+                    new ExItemStack(false, "§6Invisibility (7s)", PotionEffectType.INVISIBILITY, 7 * 20, 1, 1)
+                    .setSlot(2).setDropable(false),
                     FOOD.cloneWithId().asQuantity(8).setSlot(8)));
      */
 
