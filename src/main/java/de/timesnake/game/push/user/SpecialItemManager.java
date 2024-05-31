@@ -25,7 +25,7 @@ public class SpecialItemManager implements UserInventoryInteractListener {
       "§6Jump Boost (5s)").setDropable(false).setMoveable(false), 10 * 20) {
     @Override
     public void onUse(User user) {
-      user.addPotionEffect(PotionEffectType.JUMP, 5 * 20, 2);
+      user.addPotionEffect(PotionEffectType.JUMP_BOOST, 5 * 20, 2);
     }
   };
 
@@ -34,8 +34,8 @@ public class SpecialItemManager implements UserInventoryInteractListener {
           "§6Turtle Mode (15s)").setDropable(false).setMoveable(false), 30 * 20) {
     @Override
     public void onUse(User user) {
-      user.addPotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 15 * 20, 1);
-      user.addPotionEffect(PotionEffectType.SLOW, 15 * 20, 3);
+      user.addPotionEffect(PotionEffectType.RESISTANCE, 15 * 20, 1);
+      user.addPotionEffect(PotionEffectType.SLOWNESS, 15 * 20, 3);
       user.addPotionEffect(PotionEffectType.BLINDNESS, 13 * 20, 1);
 
       user.setItem(EquipmentSlot.HEAD, new ExItemStack(Material.NETHERITE_HELMET)

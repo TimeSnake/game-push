@@ -80,7 +80,7 @@ public class UserManager implements Listener {
       return;
     }
 
-    user.addPotionEffect(PotionEffectType.INCREASE_DAMAGE, 5 * 20, 1);
+    user.addPotionEffect(PotionEffectType.STRENGTH, 5 * 20, 1);
   }
 
 }
