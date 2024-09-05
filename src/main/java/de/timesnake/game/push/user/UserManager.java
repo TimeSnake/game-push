@@ -63,7 +63,7 @@ public class UserManager implements Listener {
     Zombie zombie = PushServer.getEscordManager().getZombie();
 
     if (zombie != null) {
-      Server.runTaskLaterSynchrony(() -> zombie.getBukkitCreature().removePotionEffect(PotionEffectType.SPEED),
+      Server.runTaskLaterSynchrony(() -> zombie.getBukkitLivingEntity().removePotionEffect(PotionEffectType.SPEED),
           1, GamePush.getPlugin());
     }
   }
