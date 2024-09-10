@@ -39,7 +39,7 @@ public class PushKitManager extends KitManager<Kit> {
               .setUnbreakable(true).setDropable(false),
           new ExItemStack(Material.STONE_SWORD).setSlot(0)
               .setUnbreakable(true).setDropable(false),
-          ExItemStack.getPotion(Material.POTION, PotionType.HEALING, false, true)
+          ExItemStack.getPotion(Material.POTION, PotionType.HEALING)
               .asQuantity(3).setSlot(1).setDropable(false),
           FOOD.cloneWithId().asQuantity(8).setSlot(8))
       .build();
