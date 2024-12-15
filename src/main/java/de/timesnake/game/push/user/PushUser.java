@@ -46,8 +46,6 @@ public class PushUser extends GameUser {
       this.teleport(PushServer.getMap().getRandomRedSpawn());
     }
 
-    this.setDefault();
-
     this.setItems();
     this.setGameMode(GameMode.SURVIVAL);
 
