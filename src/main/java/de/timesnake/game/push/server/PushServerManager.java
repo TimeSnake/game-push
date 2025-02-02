@@ -20,7 +20,6 @@ import de.timesnake.basic.loungebridge.util.user.GameUser;
 import de.timesnake.database.util.game.DbGame;
 import de.timesnake.database.util.game.DbTmpGame;
 import de.timesnake.game.push.main.GamePush;
-import de.timesnake.game.push.main.Plugin;
 import de.timesnake.game.push.map.EscortManager;
 import de.timesnake.game.push.map.ItemSpawner;
 import de.timesnake.game.push.map.PushMap;
@@ -115,11 +114,6 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
   @Override
   public GameUser loadUser(Player player) {
     return new PushUser(player);
-  }
-
-  @Override
-  public Plugin getGamePlugin() {
-    return Plugin.PUSH;
   }
 
   public EscortManager getEscortManager() {
