@@ -6,9 +6,9 @@ package de.timesnake.game.push.server;
 
 import de.timesnake.basic.bukkit.util.Server;
 import de.timesnake.basic.bukkit.util.user.User;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboard.LineId;
-import de.timesnake.basic.bukkit.util.user.scoreboard.ExSideboardBuilder;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboard;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboard.LineId;
+import de.timesnake.basic.bukkit.util.user.scoreboard.KeyedSideboardBuilder;
 import de.timesnake.basic.bukkit.util.user.scoreboard.Sideboard;
 import de.timesnake.basic.bukkit.util.world.ExLocation;
 import de.timesnake.basic.game.util.game.Team;
@@ -54,7 +54,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
   private int lap = 0;
   private EscortManager escortManager;
   private UserManager userManager;
-  private ExSideboard sideboard;
+  private KeyedSideboard sideboard;
   private int blueWins = 0;
   private int redWins = 0;
   private SpecialItemManager specialItemManager;
@@ -68,7 +68,7 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
 
     this.setTeamMateDamage(false);
 
-    this.sideboard = Server.getScoreboardManager().registerExSideboard(new ExSideboardBuilder()
+    this.sideboard = Server.getScoreboardManager().registerExSideboard(new KeyedSideboardBuilder()
         .name("push")
         .title("§6§lPush")
         .lineSpacer()
