@@ -67,7 +67,7 @@ public class PushMap extends Map implements ResetableMap {
       world.setOption(ExWorldOption.ALLOW_LIGHT_UP_INTERACTION, true);
       world.setOption(ExWorldOption.ALLOW_FLUID_COLLECT, false);
       world.setOption(ExWorldOption.ALLOW_FLUID_PLACE, false);
-      world.setOption(ExWorldOption.ALLOW_FLINT_AND_STEEL, false);
+      world.setOption(ExWorldOption.ALLOW_FLINT_AND_STEEL_AND_FIRE_CHARGE, false);
       world.setOption(ExWorldOption.FORBIDDEN_BLOCK_INVENTORIES, List.of(Material.AIR));
       world.setExceptService(true);
       world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);

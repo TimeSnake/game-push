@@ -147,12 +147,12 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
           this.getGame().getBlueTeam().getUsers().size() * 20;
 
       for (User user : this.getGame().getBlueTeam().getUsers()) {
-        user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        user.getAttribute(Attribute.MAX_HEALTH).setBaseValue(health);
         user.setHealth(health);
       }
 
       for (User user : this.getGame().getRedTeam().getUsers()) {
-        user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        user.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20);
         user.setHealth(20);
       }
     } else if (delta > 0) {
@@ -160,17 +160,17 @@ public class PushServerManager extends LoungeBridgeServerManager<PushGame> {
           this.getGame().getRedTeam().getUsers().size() * 20;
 
       for (User user : this.getGame().getRedTeam().getUsers()) {
-        user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        user.getAttribute(Attribute.MAX_HEALTH).setBaseValue(health);
         user.setHealth(health);
       }
 
       for (User user : this.getGame().getBlueTeam().getUsers()) {
-        user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        user.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20);
         user.setHealth(20);
       }
     } else {
       for (User user : Server.getInGameUsers()) {
-        user.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        user.getAttribute(Attribute.MAX_HEALTH).setBaseValue(20);
         user.setHealth(20);
       }
     }
